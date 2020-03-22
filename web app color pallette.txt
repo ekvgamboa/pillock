@@ -1,0 +1,5 @@
+web page color pallette
+gray blue #9DBBD6
+light grey blue #C3D3E3
+
+font exo 2

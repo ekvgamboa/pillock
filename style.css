@@ -1,0 +1,55 @@
+*, *::before, *::after{
+	box-sizing: border-box;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	background-color: #03C5D1;
+	font-size: 1.2rem;
+	color: white;
+}
+
+.full-height-grow{
+	display: flex;
+	flex-direction: column;
+}
+.main-class-title{
+	justify-content: space-between;
+	align-items: center;
+	display: flex;
+}
+.logo-name{
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	color: inherit;
+	margin-left: 1rem;
+}
+.main-class-title a{
+		text-decoration: none;
+		color: inherit;
+}
+
+.main-nav-item ul{
+	list-style: none;
+	color: inherit;
+	display: flex;
+	margin: 0;
+	padding: 0;
+	font-familiy: roboto;
+}
+
+.main-nav-item a{
+	padding: 1rem;
+	text-decoration: none;
+	color: inherit;
+}
+
+.main-nav-item a:hover{
+	color: black;
+}
+
+.mw_logo{
+	
+}
