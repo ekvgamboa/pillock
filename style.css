@@ -1,3 +1,5 @@
+@import url('http://fonts.googleapis.com/css?family=Exo 2:400,500,700');
+
 *, *::before, *::after{
 	box-sizing: border-box;
 }
@@ -5,20 +7,117 @@
 body {
 	padding: 0;
 	margin: 0;
-	background-color: #03C5D1;
+	background-color: #C3D3E3;
 	font-size: 1.2rem;
+	font-family: 'Exo 2', sans-serif;
 	color: white;
+	min-height: 100vh;
+}
+
+.logo{
+	size: 1.2rem;
+}
+
+.page-content{
+	color: #6D7074;
+	margin: auto;
+}
+.logo-name-title{
+	padding: 0;
+	margin: 0;
+	padding-left: .25rem;
 }
 
 .full-height-grow{
 	display: flex;
 	flex-direction: column;
 }
-.main-class-title{
-	justify-content: space-between;
-	align-items: center;
-	display: flex;
+
+.main-section{
+	position: relative;
+	overflow: hidden;
 }
+
+.main-section:after{
+	content: ' ';
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 1;
+	opacity: .05;
+	background-image: url("daylight-environment-forest-idyllic-459225.jpg");
+	background-repeat: no-repeat;
+	background-position: 50% 0;
+	-ms-background-size: cover;
+	-o-background-size: cover;
+	-moz-background-size: cover;
+	-webkit-background-size: cover;
+	background-size: cover;
+}
+
+.main-section h1{
+	padding: 200px;
+	position: relative;
+	z-index: 2;
+}
+
+
+.sticky {
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
+.main-class-header, .main-class-footer{
+	display: flex;
+	background-color: #9DBBD6;
+	padding: 0;
+}
+
+.main-class-header{
+	align-items: center;
+	justify-content: space-between;
+	padding-bottom: .5rem;
+	padding-top: .25rem;
+	z-index: 3;
+}
+
+.main-class-footer{
+	padding-top: .5rem;
+	padding-bottom: .25rem;
+	position: fixed;
+	bottom: 0pt;
+	left: 0pt;
+	width: 100%;
+	z-index: 3;
+}
+
+.main-section{
+	display: flex;
+	justify-content: space-between;
+	flex-grow: 1;
+	align-items: center;
+}
+
+.footer-logo{
+	margin: auto;
+	text-align: center;
+	padding-bottom: .25rem;
+	font-size: .7rem;
+}
+
+.container{
+	margin: 0 auto;
+	padding: 0;
+	flex-grow: 1;
+/*	max-width: 1440px;*/
+	height: auto;
+	width: 100%;
+}
+
 .logo-name{
 	display: flex;
 	align-items: center;
@@ -26,9 +125,14 @@ body {
 	color: inherit;
 	margin-left: 1rem;
 }
-.main-class-title a{
-		text-decoration: none;
-		color: inherit;
+
+.main-class-header a{
+	text-decoration: none;
+	color: inherit;	
+}
+
+p{
+	color: inherit;
 }
 
 .main-nav-item ul{
@@ -36,8 +140,8 @@ body {
 	color: inherit;
 	display: flex;
 	margin: 0;
+	margin-right: .5rem;
 	padding: 0;
-	font-familiy: roboto;
 }
 
 .main-nav-item a{
@@ -50,6 +154,94 @@ body {
 	color: black;
 }
 
-.mw_logo{
-	
+.logo{
+	margin-left: .5rem;	
+}
+
+@media (max-width: 880px){
+	.main-section{
+		flex-direction: column;
+		justify-content: center;
+	}
+}
+
+.btn{
+	color: white;
+	background: #9DBBD6;
+	border-radius: .25rem;
+	padding: .75rem 1.5rem;
+	text-decoration: none;
+	outline: none;
+	z-index: 2;
+	cursor: pointer;
+	font-size: .9rem;
+}
+
+.join-form {
+   /* background-color: #C3D3E3;*/
+   background-color: none;
+    width: 50vw;
+    max-width: 50%;
+    padding: 2rem 4rem;
+    border-radius: 20px;
+	z-index: 2;
+	padding-bottom: 10rem;
+  }
+  
+  .input-group {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+  }
+  
+  .input-group:last-child {
+    margin-bottom: 0;
+    z-index: inherit;
+  }
+  
+  .input-group label {
+    font-weight: bold;
+    margin-bottom: .5rem;
+    z-index: inherit;
+  }
+  
+  .input-group input {
+    outline: none;
+    background: none;
+    border: 1px solid white;
+    font-size: 1em;
+    padding: .5em;
+    color: inherit;
+    border-radius: 5px;
+    z-index: inherit;
+  }
+  
+  .input-group input:focus {
+    border-color: #596da0;
+  }
+  
+  @media (max-width: 900px) {
+    .join-main-section {
+      flex-direction: column;
+      justify-content: center;
+    }
+  
+    .join-form {
+      width: 80vw;
+      max-width: inherit;
+      margin: 2rem 0;
+    }
+  }
+
+
+
+.profile-link input{
+	margin-left: .25rem;
+	width: 2rem;
+	height: 2rem;
+}
+
+.main-nav-item .current-page{
+	color: black;
 }
