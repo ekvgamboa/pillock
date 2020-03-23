@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 router.get('/',async (req,res)=>{
-    res.render('index',{title: "Welcome to Pillock"})
+    res.render('about',{title: "Pillock - About Us"})
 })
 
 module.exports = router

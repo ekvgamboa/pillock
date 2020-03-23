@@ -5,7 +5,7 @@
 	<meta charset = "UTF-8">
 	<meta name = "viewport" content = "width=device-width,intial-scale=1.0">
 	<link href = "/stylesheets/main.css" rel = "stylesheet">
-	<title>Pillock</title>
+	<title>Pillock - Sign Up</title>
 </head>
 
 <body class = "full-height-grow">
@@ -25,39 +25,58 @@
 			<ul>
 				<a href = "/about"><li> About Us </li></a>
 				<a href = "/login"><li>Log in</li></a>
-				<a href = "/signup"><li>Sign Up </li></a>
+				<a href = "/signup" class = "current-page"><li><b><u>Sign Up</u></b> </li></a>
 			</ul>
 		</nav>
 	</header>
-
+	
 	<div class = "container full-height-grow">
 		<section class = "main-section">
 			<div class = "left">
-				<h1 class = 'index-title'>Welcome to Pillock</h1>
-				&lt; Insert some witty slogan here  &gt;
+				<h1>Sign Up</h1>
 			</div>
-			<div class = "page-content">This will be filled in sometime</div>
+			
+            <form class="join-form">
+                <div class="input-group">
+                    <label>Name:</label>
+                    <input type="text">
+                </div>
+                <div class="input-group">
+                    <label>Email:</label>
+                    <input type="email">
+                </div>
+                <div class="input-group">
+                    <label>Password:</label>
+                    <input type="password">
+                </div>
+                <div class="input-group">
+					<button type="submit" class="btn">Sign Up</button>
+				</div>
+				<div class = "input-group-cancel">
+					<a href = "/">Cancel</a>
+				</div>
+            </form>
 		</section>
 	</div>
 
-	<footer class = "main-class-footer" id = "main-footer">
+	<footer class = "main-class-footer">
         <div class = "footer-logo">
 		    <a href = "/">
-				<svg width="46" height="71" viewBox="0 0 46 71" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<svg  width="46" height="71" viewBox="0 0 46 71" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<rect x="2.5" y="13.5" width="41" height="55" rx="17.5" fill="#09B5FE" stroke="black" stroke-width="5"/>
 					<rect x="2.5" y="2.5" width="41" height="39" rx="17.5" fill="#FF0A0A" stroke="black" stroke-width="5"/>
 					<circle cx="22.5" cy="50.5" r="4.5" fill="black"/>
 					<path d="M22.5 51.2941L26.3971 58.0441H18.6029L22.5 51.2941Z" fill="black"/>
-					</svg>					
+				</svg>
 			</a>
 			<br>Fucking Shit Up Everyday, Day By Day
 		</div>
 	</footer>
-	<script>
+
+    <script>
 		window.onscroll = function() {myFunction()};
 
 		var header = document.getElementById("main-header");
-		var footer = document.getElementById("main-footer");
 		var sticky = header.offsetTop;
 
 		function myFunction() {
