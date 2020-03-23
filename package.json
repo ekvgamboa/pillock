@@ -1,0 +1,19 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "description": "Senior Design web app",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "devStart": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "nodemon": "^2.0.2"
+  }
+}

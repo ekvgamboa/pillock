@@ -1,27 +1,14 @@
-const http = require('http')
-const fs = require('fs')
-const port = 3000
+const express = require('express')
+const app = express()
+const expresslayouts = require('express-ejs-layouts')
 
-const server = http.createServer(function(req, res){
-    res.writeHead(200,{'Content-Type': 'text/html'})
-    fs.readFile('index.html',function(error, data){
-        if(error){
-            res.writeHead(404)
-            res.write('ERROR: File Not Found...')
-        }
-        else{
-            res.write(data)
-        }
 
-        res.end()
-    })
-})
+app.set('view engine','ejs')
 
-server.listen(port,function(error){
-    if(error){
-        console.log('error ',error)
-    }
-    else{
-        console.log('server is listening on port: ' + port)
-    }
-})
+app.set('views',__dirname + '/views')
+app.set('layout','layouts/layout')
+app.use(expresslayouts)
+app.use(express.static('public'))
+
+
+app.listen(procces.env.PORT || 3000)
