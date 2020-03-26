@@ -9,26 +9,7 @@
 </head>
 
 <body class = "full-height-grow">
-    <header class = "main-class-header" id = "main-header">
-        <a href = "/">			
-        <div class = "logo-name">
-            <svg class = "logo" width="46" height="71" viewBox="0 0 46 71" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2.5" y="13.5" width="41" height="55" rx="17.5" fill="#09B5FE" stroke="black" stroke-width="5"/>
-                <rect x="2.5" y="2.5" width="41" height="39" rx="17.5" fill="#FF0A0A" stroke="black" stroke-width="5"/>
-                <circle cx="22.5" cy="50.5" r="4.5" fill="black"/>
-                <path d="M22.5 51.2941L26.3971 58.0441H18.6029L22.5 51.2941Z" fill="black"/>
-            </svg>		
-            <h1 class = "logo-name-title">Pillock</h1>
-        </div>
-        </a>
-        <nav class = "main-nav-item">
-            <ul>
-                <a href = "/about"><li>About Us</li></a>
-                <a href = "/login" class = "current-page"><li><b><u>Log in</u></b></li></a>
-                <a href = "/signup"><li>Sign Up </li></a>
-            </ul>
-        </nav>
-    </header>    
+   
     <div class = "container full-height-grow">
 		<section class = "main-section">
             <div class = "left">
@@ -44,39 +25,11 @@
                     <input type="password">
                 </div>
                 <div class="input-group">
-                    <button type="submit" class="btn">Log In</button>
+                    <button type="submit" id = "login" class="btn">Log In</button>
                 </div>
             </form>
 		</section>
 	</div>
-        
-    <footer class = "main-class-footer">
-        <div class = "footer-logo">
-		    <a href = "/">
-				<svg  width="46" height="71" viewBox="0 0 46 71" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<rect x="2.5" y="13.5" width="41" height="55" rx="17.5" fill="#09B5FE" stroke="black" stroke-width="5"/>
-					<rect x="2.5" y="2.5" width="41" height="39" rx="17.5" fill="#FF0A0A" stroke="black" stroke-width="5"/>
-					<circle cx="22.5" cy="50.5" r="4.5" fill="black"/>
-					<path d="M22.5 51.2941L26.3971 58.0441H18.6029L22.5 51.2941Z" fill="black"/>
-				</svg>
-			</a>
-			<br>Fucking Shit Up Everyday, Day By Day
-		</div>
-	</footer>
 
-    <script>
-		window.onscroll = function() {myFunction()};
-
-		var header = document.getElementById("main-header");
-		var sticky = header.offsetTop;
-
-		function myFunction() {
-		if (window.pageYOffset > sticky) {
-			header.classList.add("sticky");
-		} else {
-			header.classList.remove("sticky");
-		}
-		}
-	</script>
 </body>
 </html>

@@ -1,12 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<script type = "text/javascript" src = "layout.ejs"></script>
+	<script type = "text/javascript" src = "login.ejs"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel = "stylesheet" href = "/stylesheets/main.css">
     <title><%= title %></title>
 </head>
 <body>
+	<header class = "main-class-header" id = "main-header">
+		<a href = "/">			
+		<div class = "logo-name">
+			<svg class ="logo" width="46" height="71" viewBox="0 0 46 71" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<rect x="2.5" y="13.5" width="41" height="55" rx="17.5" fill="#09B5FE" stroke="black" stroke-width="5"/>
+				<rect x="2.5" y="2.5" width="41" height="39" rx="17.5" fill="#FF0A0A" stroke="black" stroke-width="5"/>
+				<circle cx="22.5" cy="50.5" r="4.5" fill="black"/>
+				<path d="M22.5 51.2941L26.3971 58.0441H18.6029L22.5 51.2941Z" fill="black"/>
+			</svg>		
+			<h1 class = "logo-name-title">Pillock</h1>
+		</div>
+			<nav class = "main-nav-item">
+				<ul>
+					<a href = "/about"><li> About Us </li></a>
+					<a href = "#" id = "a-login"><li id = "login"></li></a>
+					<a href = "#" id = "a-user"><li id = "user-prof"></li></a>
+				</ul>
+			</nav>
+	</header>
+
     <%- body %>
+    <footer class = "main-class-footer">
+        <div class = "footer-logo">
+		    <a href = "/">
+				<svg  width="46" height="71" viewBox="0 0 46 71" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect x="2.5" y="13.5" width="41" height="55" rx="17.5" fill="#09B5FE" stroke="black" stroke-width="5"/>
+					<rect x="2.5" y="2.5" width="41" height="39" rx="17.5" fill="#FF0A0A" stroke="black" stroke-width="5"/>
+					<circle cx="22.5" cy="50.5" r="4.5" fill="black"/>
+					<path d="M22.5 51.2941L26.3971 58.0441H18.6029L22.5 51.2941Z" fill="black"/>
+				</svg>
+			</a>
+			<br>F*cking Sh*t Up Everyday, Day By Day
+		</div>
+	</footer>
+
+	<script>
+		window.onscroll = function() {myFunction()};
+
+		var header = document.getElementById("main-header");
+		var footer = document.getElementById("main-footer");
+		var sticky = header.offsetTop;
+
+		var loggedIn;
+
+		function myFunction() {
+		if (window.pageYOffset > sticky) {
+			header.classList.add("sticky");
+		} else {
+			header.classList.remove("sticky");
+		}
+		}
+
+		if(!loggedIn){
+			document.getElementById("login").innerHTML = "Log In";
+			document.getElementById("a-login").href = "/login";
+			document.getElementById("user-prof").innerHTML = "Sign Up";
+			document.getElementById("a-user").href = "/signup";
+		}
+		else{
+			document.getElementById("login").innerHTML = "Log Out";
+			document.getElementById("a-login").href = "/";
+			document.getElementById("user-prof").innerHTML = "View Profile";
+		}
+
+</script>
+
+
 </body>
 </html>

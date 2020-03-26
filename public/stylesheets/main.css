@@ -93,7 +93,7 @@ body {
 .main-class-footer{
 	padding-top: .5rem;
 	padding-bottom: .25rem;
-	position: fixed;
+	/*position: fixed;*/
 	bottom: 0pt;
 	left: 0pt;
 	width: 100%;
@@ -215,6 +215,9 @@ body {
 	cursor: pointer;
 	font-size: .9rem;
 }
+.btn:hover{
+	opacity: .8;
+}
 
 .left-signup{
 	position: fixed;
@@ -256,6 +259,10 @@ body {
     text-align: center;
     border-style: solid;
     
+  }
+  
+  .input-group-cancel:hover{
+	  opacity: .8;
   }
   
   .input-group:last-child {
