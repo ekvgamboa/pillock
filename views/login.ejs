@@ -2,6 +2,7 @@
 
 <html lang = "en">
 <head>
+    <script type = "text/javascript" src = "layout.ejs"></script>
     <meta charset = "UTF-8">
 	<meta name = "viewport" content = "width=device-width,intial-scale=1.0">
 	<link href = "/stylesheets/main.css" rel = "stylesheet">
@@ -15,6 +16,7 @@
             <div class = "left">
                 <h1>Log In</h1>
             </div>
+
             <form class="join-form">
                 <div class="input-group">
                     <label>Username or Email:</label>
@@ -25,7 +27,10 @@
                     <input type="password">
                 </div>
                 <div class="input-group">
-                    <button type="submit" id = "login" class="btn">Log In</button>
+                    <button onclick = "loggedIn = true" class="btn">Log In</button>
+                </div>
+                <div class = "input-group">
+                    <a href = "/" class = "forgot">Forgot Password?</a>
                 </div>
             </form>
 		</section>
