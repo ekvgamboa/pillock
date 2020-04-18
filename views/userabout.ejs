@@ -2,11 +2,10 @@
 
 <html lang = "en">
 <head>
-    <script type = "text/javascript" src = "layout.ejs"></script>
     <meta charset = "UTF-8">
 	<meta name = "viewport" content = "width=device-width,intial-scale=1.0">
 	<link href = "/stylesheets/main.css" rel = "stylesheet">
-	<title>Pillock - Log In</title>
+	<title>Pillock - About Us</title>
 </head>
 
 <body class = "full-height-grow">
@@ -23,41 +22,29 @@
 			<h1 class = "logo-name-title">Pillock</h1>
 		</div>
 			<nav class = "main-nav-item">
-				<ul>
-					<a href = "/about"><li> About Us </li></a>
-					<a href = "/login" id = "a-login">Log In<li id = "login"></li></a>
-					<a href = "/signup" id = "a-user">Sign Up<li id = "user-prof"></li></a>
-				</ul>
+                <form action = "/logout?_method=DELETE" method = "POST" class = "join-form-user">
+                    <ul>
+                        <a href = "/about"><li> About Us </li></a>
+                        <li id = "login"><button type = "submit" class = "btn-user">Log Out</button></li>
+                        <a href = "/" id = "a-user"><li id = "user-prof">View Profile</li></a>
+                    </ul>
+                </form>
 			</nav>
     </header>
-   
+    
     <div class = "container full-height-grow">
 		<section class = "main-section">
-            <div class = "left">
-                <h1>Log In</h1>
-            </div>
-		    <% if (messages.error) { %>
-				<%= messages.error %>
-		    <% } %>
-            <form class="join-form" action = "/login" method = "POST">
-                <div class="input-group">
-                    <label for = "email">Username or Email:</label>
-                    <input type=text id = "email" name = "email" required>
+                <div class = "left">
+                    <h1>About Us</h1>
                 </div>
-                <div class="input-group">
-                    <label for = "password">Password:</label>
-                    <input type="password" id = "password" name = "password" required>
+                <div class = "page-content">Now, this is a story all about how
+                <br>Our lives got flipped turned Upside Down
+                <br>And we'd like to take a minute, just sit right there
+                <br>We'll tell you how we became Team 6 of Bel Air
                 </div>
-                <div class="input-group">
-                    <button type = "submit" class="btn">Log In</button>
-                </div>
-                <div class = "input-group">
-                    <a href = "/" class = "forgot">Forgot Password?</a>
-                </div>
-            </form>
 		</section>
-	</div>
-
+    </div>
+    
     <footer class = "main-class-footer">
         <div class = "footer-logo">
 		    <a href = "/">
@@ -71,5 +58,6 @@
 			<br>F*cking Sh*t Up Everyday, Day By Day
 		</div>
 	</footer>
+		
 </body>
 </html>
