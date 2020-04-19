@@ -48,8 +48,8 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
-/*const mysql = require('mysql')
-
+const mysql = require('mysql')
+/*
 app.use('/',indexRouter)
 app.use('/about',aboutRouter)
 app.use('/login',loginRouter)
