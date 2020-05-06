@@ -211,7 +211,7 @@ body {
 }
 
 .left{
-    padding-left: 200px;
+	padding-left: 200px;
 	padding-right: 200px;
 	display:flex;
 	flex-direction:column;
