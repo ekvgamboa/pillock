@@ -16,17 +16,41 @@ const expresslayouts = require('express-ejs-layouts')
 const initializePassport = require('./passport-config')
 initializePassport(
     passport,
-    email => users.find(user => user.email === email),
-    id => users.find(user => user.id === id)
+    email => users.find(user => user.email === email),//con.query(SELECT "email" from "userinfo")
+    id => users.find(user => user.id === id)//con.query(SELECT "ID" form "userinfo")
 )
 
 const users = []
 
-const indexRouter = require('./routes/index')
+/*const indexRouter = require('./routes/index')
 const aboutRouter = require('./routes/about')
 const loginRouter = require('./routes/login')
 const signUpRouter = require('./routes/signup')
 const loggedRouter = require("./routes/loggedin")
+*/
+const mysql = require('mysql')
+
+const con = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'password'
+})
+
+con.connect(function(err){
+    if(err)
+       throw err
+    else
+        console.log("Connected")
+})
+
+
+con.end(function(err){
+    if(err)
+        throw err
+    else
+        console.log("database closed...")
+})
+    
 
 
 app.set('view engine','ejs')
@@ -48,7 +72,8 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
-const mysql = require('mysql')
+
+
 /*
 app.use('/',indexRouter)
 app.use('/about',aboutRouter)
@@ -56,11 +81,12 @@ app.use('/login',loginRouter)
 app.use('/signup',signUpRouter)
 */
 app.get('/',checkAuthenticatedHome,(req,res)=>{
-
+//localhost:3000/
     res.render('index.ejs')
 })
 
 app.get('/login',checkNotAuthenticated,(req,res)=>{
+    //localhost:3000/login
     res.render('login.ejs')
 })
 
@@ -88,6 +114,7 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
             email: req.body.email,
             password: hashedPassword
         })
+        //con.query(INSERT into "userinfo" WHERE NAME IS id)
         res.redirect('/login')
     }
     catch{
