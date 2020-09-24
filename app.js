@@ -12,7 +12,7 @@ const session = require('express-session')
 const methodOverride = require('method-override')
 const expresslayouts = require('express-ejs-layouts')
 
-
+//test
 const initializePassport = require('./passport-config')
 initializePassport(
     passport,
