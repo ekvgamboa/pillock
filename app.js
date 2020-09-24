@@ -30,12 +30,17 @@ const loggedRouter = require("./routes/loggedin")
 */
 const mysql = require('mysql')
 
-const con = mysql.createConnection({
+/*const con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'password'
 })
-
+*/
+const con = mysql.createConnection({
+    host: 'us-cdbr-east-02.cleardb.com',
+    user: 'b746344d52540d',
+    password: '49e0a75f'
+})
 con.connect(function(err){
     if(err)
        throw err
