@@ -43,13 +43,14 @@
 			<div class = "page-content">
 				<div>
 					-- User Profile --
-					<div>First: </div>
+					<div>First: <%= name %></div>
 					<div>Last:  </div>
 					<div>Email: </div>
 					<div>Prescriptions: </div>
 				</div>
 				<div></div>
-                <form action = "/logout?_method=DELETE" method = "POST" class = "join-form">
+				<form action = "/logout?_method=DELETE" method = "POST" class = "join-form">
+					<button type = "submit" class = "btn">Edit Profile</button>
                     <button type = "submit" class = "btn">Log Out</button>
                 </form>
             </div>
