@@ -2,16 +2,15 @@
 
 <html lang = "en">
 <head>
-    <script type = "text/javascript" src = "layout.ejs"></script>
-    <meta charset = "UTF-8">
+	<meta charset = "UTF-8">
 	<meta name = "viewport" content = "width=device-width,intial-scale=1.0">
 	<link href = "/stylesheets/main.css" rel = "stylesheet">
-	<title>Pillock - Log In</title>
+	<title>Pillock</title>
 </head>
 
 <body class = "full-height-grow">
-
-    <header class = "main-class-header" id = "main-header">
+	
+	<header class = "main-class-header" id = "main-header">
 		<a href = "/">			
 		<div class = "logo-name">
 			<svg class ="logo" width="46" height="71" viewBox="0 0 46 71" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -22,43 +21,49 @@
 			</svg>		
 			<h1 class = "logo-name-title">Pillock</h1>
 		</div>
-			<nav class = "main-nav-item">
-				<ul>
-					<a href = "/about"><li> About Us </li></a>
-					<a href = "/login" id = "a-login">Log In<li id = "login"></li></a>
-					<a href = "/signup" id = "a-user">Sign Up<li id = "user-prof"></li></a>
-				</ul>
-			</nav>
+            <nav class = "main-nav-item">
+                <form action = "/logout?_method=DELETE" method = "POST" class = "join-form-user">
+                    <ul>
+                        <a href = "/about"><li> About Us </li></a>
+                        <li id = "login"><button type = "submit" class = "btn-user">Log Out</button></li>
+                        <a href = "/" id = "a-user"><li id = "user-prof">View Profile</li></a>
+                    </ul>
+                </form>
+            </nav>
     </header>
-   
-    <div class = "container full-height-grow">
+	
+	
+
+	<div class = "container full-height-grow">
 		<section class = "main-section">
-            <div class = "left">
-                <h1>Log In</h1>
+			<div class = "left">
+				<h1 class = 'index-title'>Welcome back, <%= fname %></h1>
+				&lt; Insert some witty slogan here  &gt;
+			</div>
+			<div class = "page-content">
+				<div>
+					-- User Profile --
+					<div>First: <%= fname %></div>
+					<div>Last: <%= lname %> </div>
+					<div>Email: <%= email %></div>
+					<div>Prescriptions: 
+						<ul>
+							<li>Asprin</li>
+							<li>Hot Sauce</li>
+						</ul>
+					</div>
+				</div>
+				<div></div>
+				<form action = "/logout?_method=DELETE" method = "POST" class = "join-form">
+					<button type = "submit" class = "btn">Edit Profile</button>
+                    <button type = "submit" class = "btn">Log Out</button>
+                </form>
             </div>
-		    <% if (messages.error) { %>
-				<%= messages.error %>
-		    <% } %>
-            <form class="join-form" action = "/login" method = "POST">
-                <div class="input-group">
-                    <label for = "email">Email:</label>
-                    <input type=text id = "email" name = "email" autofocus required>
-                </div>
-                <div class="input-group">
-                    <label for = "password">Password:</label>
-                    <input type="password" id = "password" name = "password" required>
-                </div>
-                <div class="input-group">
-                    <button type = "submit" class="btn">Log In</button>
-                </div>
-                <div class = "input-group">
-                    <a href = "/" class = "forgot">Forgot Password?</a>
-                </div>
-            </form>
+            
 		</section>
 	</div>
 
-    <footer class = "main-class-footer">
+	<footer class = "main-class-footer">
         <div class = "footer-logo">
 		    <a href = "/">
 				<svg  width="46" height="71" viewBox="0 0 46 71" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -71,5 +76,6 @@
 			<br>F*cking Sh*t Up Everyday, Day By Day
 		</div>
 	</footer>
+
 </body>
 </html>
