@@ -110,6 +110,10 @@ app.get('/signup',checkNotAuthenticated,(req,res)=>{
     res.render('signup.ejs')
 })
 
+app.get('/editpage',checkAuthenticatedEdit,(req,res)=>{
+    res.render('login.ejs')
+})
+
 app.post('/signup',checkNotAuthenticated,async(req,res)=>{
     try{
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
@@ -142,7 +146,7 @@ function checkAuthenticated(req,res,next){
 
 function checkAuthenticatedHome(req,res,next){
     if(req.isAuthenticated()){
-        return res.render('userpage.ejs',{ name: req.user.first_name })
+        return res.render('userpage.ejs',{ fname: req.user.first_name, lname: req.user.last_name, email: req.user.email })
     }
     next()
 }
@@ -158,6 +162,14 @@ function checkNotAuthenticated(req,res,next){
     if(req.isAuthenticated()){
         return res.redirect('/')
     }
+    next()
+}
+
+function checkAuthenticatedEdit(req,res,next){
+    if(req.isAuthenticated()){
+        return res.render('editpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email: req.user.email})
+    }
+    //res.redirect('/login')
     next()
 }
 
