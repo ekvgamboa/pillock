@@ -91,6 +91,10 @@ app.get('/',checkAuthenticatedHome,(req,res)=>{
     res.render('index.ejs')
 })
 
+app.get('/loggedIn',(req,res)=>{
+    res.render('userindex.ejs')
+})
+
 app.get('/login',checkNotAuthenticated,(req,res)=>{
     //localhost:3000/login
     res.render('login.ejs')
@@ -110,8 +114,12 @@ app.get('/signup',checkNotAuthenticated,(req,res)=>{
     res.render('signup.ejs')
 })
 
-app.get('/editpage',checkAuthenticatedEdit,(req,res)=>{
-    res.render('login.ejs')
+app.get('/edit',checkAuthenticatedEdit,(req,res)=>{
+    res.render('editpage.ejs')
+})
+
+app.get('/user',checkAuthenticated,(req,res)=>{
+    res.render('userpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email:req.user.email})
 })
 
 app.post('/signup',checkNotAuthenticated,async(req,res)=>{
@@ -131,6 +139,14 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
         res.redirect('/signup')
     }
 })
+app.post('/edit',(req,res)=>{
+    users.push({
+        first_name: req.body.fname,
+        last_name: req.body.lname,
+        email: req.body.email
+    })
+    res.redirect('/userpage')
+})
 
 app.delete('/logout',(req,res)=>{
     req.logOut()
@@ -146,7 +162,7 @@ function checkAuthenticated(req,res,next){
 
 function checkAuthenticatedHome(req,res,next){
     if(req.isAuthenticated()){
-        return res.render('userpage.ejs',{ fname: req.user.first_name, lname: req.user.last_name, email: req.user.email })
+        return res.redirect('/loggedIn')
     }
     next()
 }
@@ -160,7 +176,7 @@ function checkAuthenticatedAbout(req,res,next){
 
 function checkNotAuthenticated(req,res,next){
     if(req.isAuthenticated()){
-        return res.redirect('/')
+        return res.redirect('/user')
     }
     next()
 }
