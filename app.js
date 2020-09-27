@@ -109,17 +109,25 @@ app.post('/login',checkNotAuthenticated,passport.authenticate('local',{
 app.get('/about',checkAuthenticatedAbout,(req,res)=>{
     res.render('about.ejs')
 })
+app.get('/loggedIn/about',(req,res)=>{
+    res.render('userabout.ejs',{ name: req.user.first_name })
+})
 
 app.get('/signup',checkNotAuthenticated,(req,res)=>{
     res.render('signup.ejs')
 })
 
-app.get('/edit',checkAuthenticatedEdit,(req,res)=>{
-    res.render('editpage.ejs')
+app.get('/loggedIn/edit',checkAuthenticatedEdit,(req,res)=>{
+    res.render('editpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email: req.user.email})
 })
-
-app.get('/user',checkAuthenticated,(req,res)=>{
+app.get('/edit',(req,res)=>{
+    res.redirect('/loggedIn/edit')
+})
+app.get('/loggedIn/user',checkAuthenticated,(req,res)=>{
     res.render('userpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email:req.user.email})
+})
+app.get('/user',checkAuthenticated,(req,res)=>{
+    res.redirect('/loggedIn/user')
 })
 
 app.post('/signup',checkNotAuthenticated,async(req,res)=>{
@@ -139,7 +147,7 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
         res.redirect('/signup')
     }
 })
-app.post('/edit',(req,res)=>{
+app.post('/loggedIn/edit',(req,res)=>{
     users.push({
         first_name: req.body.fname,
         last_name: req.body.lname,
@@ -169,14 +177,14 @@ function checkAuthenticatedHome(req,res,next){
 
 function checkAuthenticatedAbout(req,res,next){
     if(req.isAuthenticated()){
-        return res.render('userabout.ejs',{ name: req.user.first_name })
+        return res.redirect('/loggedIn/about')
     }
     next()
 }
 
 function checkNotAuthenticated(req,res,next){
     if(req.isAuthenticated()){
-        return res.redirect('/user')
+        return res.redirect('/loggedIn/user')
     }
     next()
 }
@@ -185,8 +193,8 @@ function checkAuthenticatedEdit(req,res,next){
     if(req.isAuthenticated()){
         return res.render('editpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email: req.user.email})
     }
-    //res.redirect('/login')
-    next()
+    res.redirect('/login')
+    //next()
 }
 
 app.listen(process.env.PORT || 3000)
