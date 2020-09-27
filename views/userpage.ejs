@@ -11,7 +11,7 @@
 <body class = "full-height-grow">
 	
 	<header class = "main-class-header" id = "main-header">
-		<a href = "/">			
+		<a href = "/loggedIn">			
 		<div class = "logo-name">
 			<svg class ="logo" width="46" height="71" viewBox="0 0 46 71" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<rect x="2.5" y="13.5" width="41" height="55" rx="17.5" fill="#09B5FE" stroke="black" stroke-width="5"/>
@@ -26,7 +26,7 @@
                     <ul>
                         <a href = "/about"><li> About Us </li></a>
                         <li id = "login"><button type = "submit" class = "btn-user">Log Out</button></li>
-                        <a href = "/" id = "a-user"><li id = "user-prof">View Profile</li></a>
+                        <a href = "/user" id = "a-user"><li id = "user-prof">View Profile</li></a>
                     </ul>
                 </form>
             </nav>
@@ -53,7 +53,7 @@
 						</ul>
 					</div>
 				</div>
-				<div><a href = "/editpage">Edit Profile</a></div>
+				<div><a href = "/edit">Edit Profile</a></div>
 				<form action = "/logout?_method=DELETE" method = "POST" class = "join-form">
                     <button type = "submit" class = "btn">Log Out</button>
                 </form>
