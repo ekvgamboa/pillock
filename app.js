@@ -118,13 +118,13 @@ app.get('/signup',checkNotAuthenticated,(req,res)=>{
 })
 
 app.get('/loggedIn/edit',checkAuthenticatedEdit,(req,res)=>{
-    res.render('editpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email: req.user.email})
+    res.render('editpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email: req.user.email, birthday: req.user.birthdate})
 })
 app.get('/edit',(req,res)=>{
     res.redirect('/loggedIn/edit')
 })
 app.get('/loggedIn/user',checkAuthenticated,(req,res)=>{
-    res.render('userpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email:req.user.email})
+    res.render('userpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email: req.user.email, birthdate: req.user.birthdate})
 })
 app.get('/user',checkAuthenticated,(req,res)=>{
     res.redirect('/loggedIn/user')
@@ -137,6 +137,7 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
             id: Date.now().toString(),
             first_name: req.body.first_name,
             last_name: req.body.last_name,
+            birthdate: req.body.birthday,
             email: req.body.email,
             password: hashedPassword
         })
@@ -147,14 +148,18 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
         res.redirect('/signup')
     }
 })
-app.post('/loggedIn/edit',(req,res)=>{
-    users.push({
-        first_name: req.body.fname,
-        last_name: req.body.lname,
-        email: req.body.email
-    })
-    res.redirect('/userpage')
-})
+app.put('/loggedIn/edit',(req,res)=>{
+    try{
+        req.user.first_name = req.body.first_name
+        req.user.last_name = req.body.last_name
+        req.user.email = req.body.user_email
+        req.user.birthdate = req.body.birthday
+        res.redirect('/loggedIn/user')
+    }
+    catch{
+        res.redirect('/loggedIn/edit')
+    }
+})   
 
 app.delete('/logout',(req,res)=>{
     req.logOut()
@@ -191,7 +196,8 @@ function checkNotAuthenticated(req,res,next){
 
 function checkAuthenticatedEdit(req,res,next){
     if(req.isAuthenticated()){
-        return res.render('editpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email: req.user.email})
+        //return res.render('editpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email: req.user.email})
+        return next()
     }
     res.redirect('/login')
     //next()
