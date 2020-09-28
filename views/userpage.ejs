@@ -49,8 +49,10 @@
 					<div>Email: <%= email %></div>
 					<div>Prescriptions: 
 						<ul>
-							<li>Asprin</li>
-							<li>Hot Sauce</li>
+							<script language = "JavaScript">
+								var pills = "<%= prescript %>"
+								document.write(pills)
+							</script>
 						</ul>
 					</div>
 				</div>
