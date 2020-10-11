@@ -16,12 +16,14 @@ const expresslayouts = require('express-ejs-layouts')
 const initializePassport = require('./passport-config')
 initializePassport(
     passport,
-    email => users.find(user => user.email === email),//con.query(SELECT "email" from "userinfo")
-    id => users.find(user => user.id === id)//con.query(SELECT "ID" form "userinfo")
+    email => users.find(user => user.email === email),
+    id => users.find(user => user.id === id)
 )
 
 const users = []
-const prescripts = ['aspirin', 'hot sauce', 'seahawks are trash']
+
+const prescript = ['aspirin', 'hot sauce', 'niners suck']
+
 
 /*const indexRouter = require('./routes/index')
 const aboutRouter = require('./routes/about')
@@ -50,15 +52,25 @@ con.connect(function(err){
         console.log("Connected")
 })
 
+let showinfo = `SELECT * FROM userinfo`;
+con.query(showinfo, function(error, results, fields) {
+  if (error) {
+    return console.error(error.message);
+  }
+ 
+  Object.keys(results).forEach(function(key) {
+    var row = results[key];
+    users.push({id : row.uid_user,first_name : row.name,last_name : row.surname, email : row.email, web_pw : row.web_pw} );
+    });
+  console.log(users);
+})
 
 con.end(function(err){
     if(err)
         throw err
     else
         console.log("database closed...")
-})
-    
-
+});
 
 app.set('view engine','ejs')
 
@@ -142,7 +154,7 @@ app.get('/user',checkAuthenticated,(req,res)=>{
 })
 
 app.post('/signup',checkNotAuthenticated,async(req,res)=>{
-    try{
+    /*try{
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
         users.push({
             id: Date.now().toString(),
@@ -157,7 +169,48 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
     }
     catch{
         res.redirect('/signup')
+    }*/
+
+    try{    
+        var f_n= req.body.first_name;
+        var l_n= req.body.last_name;
+        var em= req.body.email;
+        var pw= await bcrypt.hash(req.body.password, 10);
+  
+    const con = mysql.createConnection({
+        host: process.env.DATABASE_HOST,
+        user: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASS,
+        database: process.env.DATABASE_NAME
+    })
+
+    var db_in=`INSERT INTO userinfo (name, surname, email, web_pw) VALUES ('${f_n}', '${l_n}', '${em}', '${pw}')`;
+    con.query(db_in, function (err, result) {
+        if (err) throw err;
+        console.log("1 record inserted" + result);
+    })
+
+
+    let getid = `SELECT uid_user FROM userinfo WHERE email='${em}' `;
+    con.query(getid, function(error, results) {
+      if (error) {
+        return console.error(error.message);
+      }
+      Object.keys(results).forEach(function(key) {
+        var row = results[key];
+        users.push({id : row.uid_user,first_name : f_n,last_name : l_n, email :em, web_pw :pw} );
+        });
+        console.log(users);
+    });
+
+
+    res.redirect('/login')
     }
+    catch{
+        res.redirect('/signup')
+    }
+
+
 })
 app.put('/loggedIn/edit',(req,res)=>{
     try{
