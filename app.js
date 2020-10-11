@@ -21,7 +21,7 @@ initializePassport(
 )
 
 const users = []
-const prescript = ['aspirin', 'hot sauce', 'seahawks are trash']
+const prescripts = ['aspirin', 'hot sauce', 'seahawks are trash']
 
 /*const indexRouter = require('./routes/index')
 const aboutRouter = require('./routes/about')
@@ -123,14 +123,15 @@ app.get('/loggedIn/edit',checkAuthenticatedEdit,(req,res)=>{
         fname: req.user.first_name,
         lname: req.user.last_name,
         email: req.user.email,
-        birthday: req.user.birthdate})
+        birthday: req.user.birthdate,
+        prescript: prescripts})
 })
 app.get('/edit',(req,res)=>{
     res.redirect('/loggedIn/edit')
 })
 app.get('/loggedIn/user',checkAuthenticated,(req,res)=>{
     res.render('userpage.ejs',{
-        prescript: prescript,
+        prescript: prescripts,
         fname: req.user.first_name,
         lname: req.user.last_name,
         email: req.user.email,
