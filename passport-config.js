@@ -9,10 +9,12 @@ function initialize(passport, getUserByEmail, getUserById){
             return done(null,false,{ message: 'No user found' })
         }
         try{
-            if(await bcrypt.compare(password,user.password)){
+            if(await bcrypt.compare(password,user.web_pw)){
                 return done(null,user)
             }
             else{
+                console.log(password)
+                console.log(user.web_pw)
                 return done(null,false,{ message: 'Incorrect Password' })
             }
         }catch(e){
