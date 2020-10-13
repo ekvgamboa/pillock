@@ -21,7 +21,9 @@ initializePassport(
 )
 
 const users = []
+
 const prescript = ['aspirin', 'hot sauce', 'niners suck']
+
 
 /*const indexRouter = require('./routes/index')
 const aboutRouter = require('./routes/about')
@@ -137,7 +139,9 @@ app.get('/loggedIn/edit',checkAuthenticatedEdit,(req,res)=>{
         fname: req.user.first_name,
         lname: req.user.last_name,
         email: req.user.email,
-        birthday: newDob})
+        birthday: newDob,
+        prescript: prescripts})
+
 })
 app.get('/edit',(req,res)=>{
     res.redirect('/loggedIn/edit')
@@ -148,7 +152,7 @@ app.get('/loggedIn/user',checkAuthenticated,(req,res)=>{
     var year =req.user.dob.getUTCFullYear()
     newDob= year + "-" + month + "-" + day
     res.render('userpage.ejs',{
-        prescript: prescript,
+        prescript: prescripts,
         fname: req.user.first_name,
         lname: req.user.last_name,
         email: req.user.email,
