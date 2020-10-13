@@ -60,7 +60,7 @@ con.query(showinfo, function(error, results, fields) {
  
   Object.keys(results).forEach(function(key) {
     var row = results[key];
-    users.push({id : row.uid_user,first_name : row.name,last_name : row.surname, email : row.email, web_pw : row.web_pw} );
+    users.push({id : row.uid_user,first_name : row.name,last_name : row.surname, email : row.email, web_pw : row.web_pw, dob : row.DOB} );
     });
   //console.log(users);
 })
@@ -131,34 +131,84 @@ app.get('/signup',checkNotAuthenticated,(req,res)=>{
 })
 
 app.get('/loggedIn/edit',checkAuthenticatedEdit,(req,res)=>{
+    var month =req.user.dob.getUTCMonth()+1
+    var day =req.user.dob.getUTCDate()
+    var year =req.user.dob.getUTCFullYear()
+    newDob= year + ":" + month + ":" + day
     res.render('editpage.ejs',{
         fname: req.user.first_name,
         lname: req.user.last_name,
         email: req.user.email,
-        birthday: req.user.birthdate,
+        birthday: newDob,
         prescript: prescripts})
+
 })
 app.get('/edit',(req,res)=>{
     res.redirect('/loggedIn/edit')
 })
 app.get('/loggedIn/user',checkAuthenticated,(req,res)=>{
+    var month =req.user.dob.getUTCMonth()+1
+    var day =req.user.dob.getUTCDate()
+    var year =req.user.dob.getUTCFullYear()
+    newDob= year + "-" + month + "-" + day
     res.render('userpage.ejs',{
         prescript: prescripts,
         fname: req.user.first_name,
         lname: req.user.last_name,
         email: req.user.email,
-        birthdate: req.user.birthdate})
+        birthdate: newDob})
 })
+
+app.get('/resetpw', (req,res)=>{
+    res.render('resetpw.ejs')
+})
+
 app.get('/user',checkAuthenticated,(req,res)=>{
     res.redirect('/loggedIn/user')
 })
-app.post('/signup',checkNotAuthenticated,passport.authenticate('local-signup',{
-    successRedirect: '/login',
-    failureRedirect: '/signup',
-    failureFlash: true
-}))
-/*app.post('/signup',checkNotAuthenticated,async(req,res)=>{
+app.post('/resetpw', async(req,res)=>{
+    if(req.body.pw1==req.body.pw2){
+        var em= req.body.email
+        var new_pw=await bcrypt.hash(req.body.pw2,10)
+        try{    
+
+        const con = mysql.createConnection({
+            host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER,
+            password: process.env.DATABASE_PASS,
+            database: process.env.DATABASE_NAME
+        })
     
+        var db_in=`UPDATE userinfo SET web_pw='${new_pw}' WHERE email='${em}'`;
+        con.query(db_in, function (err, result) {
+            if (err) throw err;
+            console.log("1 record updated" + result);
+        })
+    
+    
+        let getid = `SELECT * FROM userinfo`;
+        con.query(getid, function(error, results) {
+          if (error) {
+            return console.error(error.message);
+          }
+          Object.keys(results).forEach(function(key) {
+            var row = results[key];
+            users.push({id : row.uid_user,first_name : f_n,last_name : l_n, email :em, web_pw :pw} );
+            });
+            console.log(users);
+        });
+        res.redirect('/login')
+        }
+        catch{
+            res.redirect('/signup')
+        }
+        
+
+    }
+
+})
+
+app.post('/signup',checkNotAuthenticated,async(req,res)=>{
     /*try{
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
         users.push({
@@ -220,10 +270,25 @@ app.post('/signup',checkNotAuthenticated,passport.authenticate('local-signup',{
 })*/
 app.put('/loggedIn/edit',(req,res)=>{
     try{
-        req.user.first_name = req.body.first_name
-        req.user.last_name = req.body.last_name
-        req.user.email = req.body.user_email
-        req.user.birthdate = req.body.birthday
+        var f_n = req.body.first_name
+        var l_n = req.body.last_name
+        var em = req.body.user_email
+        var b_d= req.body.birthday
+        const con = mysql.createConnection({
+            host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER,
+            password: process.env.DATABASE_PASS,
+            database: process.env.DATABASE_NAME
+        })
+    
+        var db_in=`UPDATE userinfo SET DOB='${b_d}', name='${f_n}', surname='${l_n}' WHERE email='${req.user.email}'`;
+        con.query(db_in, function (err, result) {
+            if (err) throw err;
+            console.log("1 record updated" + result);
+        })
+    
+
+
         res.redirect('/loggedIn/user')
     }
     catch{
