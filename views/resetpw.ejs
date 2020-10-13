@@ -2,16 +2,17 @@
 
 <html lang = "en">
 <head>
+    <script type = "text/javascript" src = "layout.ejs"></script>
     <meta charset = "UTF-8">
 	<meta name = "viewport" content = "width=device-width,intial-scale=1.0">
 	<link href = "/stylesheets/main.css" rel = "stylesheet">
-	<title>Pillock - About Us</title>
+	<title>Pillock - Log In</title>
 </head>
 
 <body class = "full-height-grow">
 
     <header class = "main-class-header" id = "main-header">
-		<a href = "/loggedIn">			
+		<a href = "/">			
 		<div class = "logo-name">
 			<svg class ="logo" width="46" height="71" viewBox="0 0 46 71" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<rect x="2.5" y="13.5" width="41" height="55" rx="17.5" fill="#09B5FE" stroke="black" stroke-width="5"/>
@@ -22,30 +23,45 @@
 			<h1 class = "logo-name-title">Pillock</h1>
 		</div>
 			<nav class = "main-nav-item">
-                <form action = "/logout?_method=DELETE" method = "POST" class = "join-form-user">
-                    <ul>
-						<a href = "/about"><li> About Us </li></a>
-						<a href = "/user" id = "a-user"><li id = "user-prof">View Profile</li></a>
-                        <li id = "login"><button type = "submit" class = "btn-user">Log Out</button></li>
-
-                    </ul>
-                </form>
+				<ul>
+					<a href = "/about"><li> About Us </li></a>
+                    <a href = "/loggedIn/user" id = "a-user"><li id = "user-prof">View Profile</li></a>
+                    <li id = "login"><button type = "submit" class = "btn-user">Log Out</button></li>
+				</ul>
 			</nav>
     </header>
-    
+   
     <div class = "container full-height-grow">
 		<section class = "main-section">
-                <div class = "left">
-                    <h1>About Us</h1>
+            <div class = "left">
+                <h1>Change Password</h1>
+            </div>
+		    <% if (messages.error) { %>
+				<%= messages.error %>
+		    <% } %>
+            <form class="join-form" action="/resetpw" method="POST">
+                <div class="input-group">
+                    <label for = "email">Enter Email:</label>
+                    <input type="text" id = "email" name = "email" autofocus required>
                 </div>
-                <div class = "page-content">Now, this is a story all about how
-                <br>Our lives got flipped turned Upside Down
-                <br>And we'd like to take a minute, just sit right there
-                <br>We'll tell you how we became Team 6 of Bel Air
+                <div class="input-group">
+                    <label for = "pw1">New Password:</label>
+                    <input type="password" id = "pw1" name = "pw1" required>
                 </div>
+                <div class="input-group">
+                    <label for = "pw2">Confirm Password:</label>
+                    <input type="password" id = "pw2" name = "pw2" required>
+                </div>
+                <div class="input-group">
+                    <button type = "submit" class="btn">Submit</button>
+                </div>
+                <div class = "input-group">
+                    <a href = "/" class = "forgot">Cancel</a>
+                </div>
+            </form>
 		</section>
-    </div>
-    
+	</div>
+
     <footer class = "main-class-footer">
         <div class = "footer-logo">
 		    <a href = "/">
@@ -59,6 +75,5 @@
 			<br>F*cking Sh*t Up Everyday, Day By Day
 		</div>
 	</footer>
-		
 </body>
 </html>
