@@ -225,7 +225,7 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
     catch{
         res.redirect('/signup')
     }
-    //
+    */
     try{    
         var f_n= req.body.first_name;
         var l_n= req.body.last_name;
@@ -267,7 +267,7 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
     }
 
 
-})*/
+})
 app.put('/loggedIn/edit',(req,res)=>{
     try{
         var f_n = req.body.first_name
