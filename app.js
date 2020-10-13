@@ -22,7 +22,7 @@ initializePassport(
 
 const users = []
 
-const prescript = ['aspirin', 'hot sauce', 'niners suck']
+const prescripts = ['aspirin', 'hot sauce', 'niners suck']
 
 
 /*const indexRouter = require('./routes/index')
@@ -62,7 +62,7 @@ con.query(showinfo, function(error, results, fields) {
     var row = results[key];
     users.push({id : row.uid_user,first_name : row.name,last_name : row.surname, email : row.email, web_pw : row.web_pw} );
     });
-  console.log(users);
+  //console.log(users);
 })
 
 con.end(function(err){
@@ -113,11 +113,11 @@ app.get('/login',checkNotAuthenticated,(req,res)=>{
     res.render('login.ejs')
 })
 
-app.post('/login',checkNotAuthenticated,passport.authenticate('local',{
+app.post('/login',checkNotAuthenticated,passport.authenticate('local-login',{
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
-}))
+}))//test
 
 app.get('/about',checkAuthenticatedAbout,(req,res)=>{
     res.render('about.ejs')
@@ -152,8 +152,13 @@ app.get('/loggedIn/user',checkAuthenticated,(req,res)=>{
 app.get('/user',checkAuthenticated,(req,res)=>{
     res.redirect('/loggedIn/user')
 })
-
-app.post('/signup',checkNotAuthenticated,async(req,res)=>{
+app.post('/signup',checkNotAuthenticated,passport.authenticate('local-signup',{
+    successRedirect: '/login',
+    failureRedirect: '/signup',
+    failureFlash: true
+}))
+/*app.post('/signup',checkNotAuthenticated,async(req,res)=>{
+    
     /*try{
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
         users.push({
@@ -169,13 +174,13 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
     }
     catch{
         res.redirect('/signup')
-    }*/
-
+    }
+    //
     try{    
         var f_n= req.body.first_name;
         var l_n= req.body.last_name;
         var em= req.body.email;
-        var pw= await bcrypt.hash(req.body.password, 10);
+        const pw= await bcrypt.hash(req.body.password, 10);
   
     const con = mysql.createConnection({
         host: process.env.DATABASE_HOST,
@@ -183,11 +188,12 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
         password: process.env.DATABASE_PASS,
         database: process.env.DATABASE_NAME
     })
+    var ue = `SELECT uid_user FROM userinfo WHERE email = '${em}'`;
 
     var db_in=`INSERT INTO userinfo (name, surname, email, web_pw) VALUES ('${f_n}', '${l_n}', '${em}', '${pw}')`;
     con.query(db_in, function (err, result) {
         if (err) throw err;
-        console.log("1 record inserted" + result);
+        //console.log("1 record inserted" + result);
     })
 
 
@@ -200,7 +206,7 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
         var row = results[key];
         users.push({id : row.uid_user,first_name : f_n,last_name : l_n, email :em, web_pw :pw} );
         });
-        console.log(users);
+       // console.log(users);
     });
 
 
@@ -211,7 +217,7 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
     }
 
 
-})
+})*/
 app.put('/loggedIn/edit',(req,res)=>{
     try{
         req.user.first_name = req.body.first_name
