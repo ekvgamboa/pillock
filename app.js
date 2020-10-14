@@ -131,10 +131,15 @@ app.get('/signup',checkNotAuthenticated,(req,res)=>{
 })
 
 app.get('/loggedIn/edit',checkAuthenticatedEdit,(req,res)=>{
-    var month =req.user.dob.getUTCMonth()+1
-    var day =req.user.dob.getUTCDate()
-    var year =req.user.dob.getUTCFullYear()
-    newDob= year + ":" + month + ":" + day
+    if(req.user.dob != null){
+        var month =req.user.dob.getUTCMonth()+1
+        var day =req.user.dob.getUTCDate()
+        var year =req.user.dob.getUTCFullYear()
+        newDob= year + "-" + month + "-" + day
+    }
+    else{
+        newDob = "1900-01-01"
+    }
     res.render('editpage.ejs',{
         fname: req.user.first_name,
         lname: req.user.last_name,
@@ -147,10 +152,15 @@ app.get('/edit',(req,res)=>{
     res.redirect('/loggedIn/edit')
 })
 app.get('/loggedIn/user',checkAuthenticated,(req,res)=>{
-    var month =req.user.dob.getUTCMonth()+1
-    var day =req.user.dob.getUTCDate()
-    var year =req.user.dob.getUTCFullYear()
-    newDob= year + "-" + month + "-" + day
+    if(req.user.dob != null){
+        var month =req.user.dob.getUTCMonth()+1
+        var day =req.user.dob.getUTCDate()
+        var year =req.user.dob.getUTCFullYear()
+        newDob= year + "-" + month + "-" + day
+    }
+    else{
+        newDob = "1900-01-01"
+    }
     res.render('userpage.ejs',{
         prescript: prescripts,
         fname: req.user.first_name,
@@ -193,7 +203,7 @@ app.post('/resetpw', async(req,res)=>{
           }
           Object.keys(results).forEach(function(key) {
             var row = results[key];
-            users.push({id : row.uid_user,first_name : f_n,last_name : l_n, email :em, web_pw :pw} );
+            users.push({id : row.uid_user,first_name : row.name,last_name : row.surname, email :row.email, web_pw :row.web_pw, dob: row.DOB} );
             });
             console.log(users);
         });
@@ -227,9 +237,10 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
     }
     */
     try{    
-        var f_n= req.body.first_name;
-        var l_n= req.body.last_name;
-        var em= req.body.email;
+        var f_n = req.body.first_name;
+        var l_n = req.body.last_name;
+        var em = req.body.email;
+        var bd = req.body.birthday 
         const pw= await bcrypt.hash(req.body.password, 10);
   
     const con = mysql.createConnection({
@@ -240,7 +251,7 @@ app.post('/signup',checkNotAuthenticated,async(req,res)=>{
     })
     var ue = `SELECT uid_user FROM userinfo WHERE email = '${em}'`;
 
-    var db_in=`INSERT INTO userinfo (name, surname, email, web_pw) VALUES ('${f_n}', '${l_n}', '${em}', '${pw}')`;
+    var db_in=`INSERT INTO userinfo (name, surname, DOB, email, web_pw) VALUES ('${f_n}', '${l_n}', '${bd}','${em}', '${pw}')`;
     con.query(db_in, function (err, result) {
         if (err) throw err;
         //console.log("1 record inserted" + result);
