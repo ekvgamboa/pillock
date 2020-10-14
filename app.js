@@ -127,7 +127,7 @@ app.get('/loggedIn/about',(req,res)=>{
 })
 
 app.get('/signup',checkNotAuthenticated,(req,res)=>{
-    res.render('signup.ejs')
+    res.render('signup.ejs',{message: ''})
 })
 
 app.get('/loggedIn/edit',checkAuthenticatedEdit,(req,res)=>{
@@ -207,6 +207,12 @@ app.post('/resetpw', async(req,res)=>{
             });
             console.log(users);
         });
+        con.end(function(err){
+            if(err)
+                throw err
+            else
+                console.log("database closed...")
+        })
         res.redirect('/login')
         }
         catch{
@@ -218,67 +224,67 @@ app.post('/resetpw', async(req,res)=>{
 
 })
 
+/*app.post('/signup',passport.authenticate('local-signup',{
+    successRedirect: '/login',
+    failureRedirect: '/signup',
+    failureFlash: true
+}))//test
+*/
+
+
 app.post('/signup',checkNotAuthenticated,async(req,res)=>{
-    /*try{
-        const hashedPassword = await bcrypt.hash(req.body.password, 10)
-        users.push({
-            id: Date.now().toString(),
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            birthdate: req.body.birthday,
-            email: req.body.email,
-            password: hashedPassword
-        })
-        //con.query(INSERT into "userinfo" WHERE NAME IS id)
-        res.redirect('/login')
+    let errors = []
+    var f_n = req.body.first_name;
+    var l_n = req.body.last_name;
+    var em = req.body.email;
+    var bd = req.body.birthday 
+    const pw= await bcrypt.hash(req.body.password, 10);
+    
+    if(users.some(user => user.email === em)){
+        res.render('signup.ejs',{message: "User with entered email already exists!"})
     }
-    catch{
-        res.redirect('/signup')
-    }
-    */
     try{    
-        var f_n = req.body.first_name;
-        var l_n = req.body.last_name;
-        var em = req.body.email;
-        var bd = req.body.birthday 
-        const pw= await bcrypt.hash(req.body.password, 10);
-  
-    const con = mysql.createConnection({
-        host: process.env.DATABASE_HOST,
-        user: process.env.DATABASE_USER,
-        password: process.env.DATABASE_PASS,
-        database: process.env.DATABASE_NAME
-    })
-    var ue = `SELECT uid_user FROM userinfo WHERE email = '${em}'`;
+        const con = mysql.createConnection({
+            host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER,
+            password: process.env.DATABASE_PASS,
+            database: process.env.DATABASE_NAME
+        })
+        /*let ue = con.query(`SELECT uid_user FROM userinfo WHERE email = '${em}'`,function(err){
+            if(err) throw err;
+        })*/
 
-    var db_in=`INSERT INTO userinfo (name, surname, DOB, email, web_pw) VALUES ('${f_n}', '${l_n}', '${bd}','${em}', '${pw}')`;
-    con.query(db_in, function (err, result) {
-        if (err) throw err;
-        //console.log("1 record inserted" + result);
-    })
+        var db_in=`INSERT INTO userinfo (name, surname, DOB, email, web_pw) VALUES ('${f_n}', '${l_n}', '${bd}','${em}', '${pw}')`;
+        con.query(db_in, function (err, result) {
+            if (err) throw err;
+            //console.log("1 record inserted" + result);
+        })
 
-
-    let getid = `SELECT uid_user FROM userinfo WHERE email='${em}' `;
-    con.query(getid, function(error, results) {
-      if (error) {
-        return console.error(error.message);
-      }
-      Object.keys(results).forEach(function(key) {
-        var row = results[key];
-        users.push({id : row.uid_user,first_name : f_n,last_name : l_n, email :em, web_pw :pw} );
+        let getid = `SELECT uid_user FROM userinfo WHERE email='${em}' `;
+        con.query(getid, function(error, results) {
+        if (error) {
+            return console.error(error.message);
+        }
+        Object.keys(results).forEach(function(key) {
+            var row = results[key];
+            users.push({id : row.uid_user,first_name : f_n,last_name : l_n, email :em, web_pw :pw} );
+            });
+        // console.log(users);
         });
-       // console.log(users);
-    });
-
-
-    res.redirect('/login')
+        con.end(function(err){
+            if(err)
+                throw err
+            else
+                console.log("database closed...")})
+    
+        res.redirect('/login')
+        
     }
     catch{
         res.redirect('/signup')
     }
-
-
 })
+
 app.put('/loggedIn/edit',(req,res)=>{
     try{
         var f_n = req.body.first_name
