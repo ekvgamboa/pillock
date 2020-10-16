@@ -29,6 +29,7 @@ router.get('/user/edit',checkAuthenticatedEdit,(req,res)=>{
                 if(req.user.email == result[i].email){
                     newDob = result[i].DOB == null ? '1900-01-01' : result[i].DOB.toISOString().split('T')[0]
                     res.render('editpage.ejs',{
+                        title: "Pillock - Edit Profile",
                         message: '',
                         prescript: prescripts,
                         fname : result[i].name,
@@ -65,6 +66,7 @@ router.get('/user',checkAuthenticated, async(req,res)=>{
                 if(req.user.email == result[i].email){
                     newDob = result[i].DOB == null ? '1900-01-01' : result[i].DOB.toISOString().split('T')[0]
                     res.render('userpage.ejs',{
+                        title: "Pillock - Welcome, ",
                         prescript: prescripts,
                         fname : result[i].name,
                         lname: result[i].surname,
@@ -115,6 +117,7 @@ router.put('/user/edit',async (req,res)=>{
                 if(req.user.email == results[i].email){
                     newDob = results[i].DOB == null ? '1900-01-01' : results[i].DOB.toISOString().split('T')[0]
                     res.render('editpage.ejs',{
+                        title: 'Pillock - Edit Success!',
                         message: 'Succesfully Saved Profile',
                         prescript: prescripts,
                         fname: results[i].name,
@@ -124,6 +127,7 @@ router.put('/user/edit',async (req,res)=>{
                     })
                 }
             }
+            res.redirect('/LoggedIn/user')
         })
         
         con.end(function(err){
