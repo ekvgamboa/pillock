@@ -11,25 +11,7 @@
 
 <body class = "full-height-grow">
 
-    <header class = "main-class-header" id = "main-header">
-		<a href = "/">			
-		<div class = "logo-name">
-			<svg class ="logo" width="46" height="71" viewBox="0 0 46 71" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<rect x="2.5" y="13.5" width="41" height="55" rx="17.5" fill="#09B5FE" stroke="black" stroke-width="5"/>
-				<rect x="2.5" y="2.5" width="41" height="39" rx="17.5" fill="#FF0A0A" stroke="black" stroke-width="5"/>
-				<circle cx="22.5" cy="50.5" r="4.5" fill="black"/>
-				<path d="M22.5 51.2941L26.3971 58.0441H18.6029L22.5 51.2941Z" fill="black"/>
-			</svg>		
-			<h1 class = "logo-name-title">Pillock</h1>
-		</div>
-			<nav class = "main-nav-item">
-				<ul>
-					<a href = "/about"><li> About Us </li></a>
-                    <a href = "/loggedIn/user" id = "a-user"><li id = "user-prof">View Profile</li></a>
-                    <li id = "login"><button type = "submit" class = "btn-user">Log Out</button></li>
-				</ul>
-			</nav>
-    </header>
+    <%- include('../views/partials/header.ejs') %>
    
     <div class = "container full-height-grow">
 		<section class = "main-section">
@@ -39,7 +21,7 @@
 		    <% if (messages.error) { %>
 				<%= messages.error %>
 		    <% } %>
-            <form class="join-form" action="/resetpw" method="POST">
+            <form class="join-form" action="/Change-Password?_method=PUT" method="POST">
                 <div class="input-group">
                     <label for = "email">Enter Email:</label>
                     <input type="text" id = "email" name = "email" autofocus required>
