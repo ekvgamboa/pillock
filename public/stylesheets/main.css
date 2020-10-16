@@ -10,12 +10,14 @@
 }
 
 body {
-	padding: 0;
+	/*padding: 0;*/
+	padding-top: 110px;
 	margin: 0;
 	background-color: #C3D3E3;
 	font-size: 1.2rem;
 	font-family: 'Exo 2', sans-serif;
 	color: white;
+	position: relative;
 	min-height: 100vh;
 }
 
@@ -37,6 +39,7 @@ body {
 .full-height-grow{
 	display: flex;
 	flex-direction: column;
+	position: relative;
 }
 
 .main-section{
@@ -88,14 +91,18 @@ body {
 	justify-content: space-between;
 	padding-bottom: .5rem;
 	padding-top: .25rem;
+	display: flex;
 	z-index: 3;
+	position: fixed;
+	width: 100%;
+	top: 0;
 }
 
 .main-class-footer{
 	padding-top: .5rem;
 	padding-bottom: .25rem;
 	/*position: fixed;*/
-	bottom: 0pt;
+	bottom: 0;
 	left: 0pt;
 	width: 100%;
 	z-index: 3;

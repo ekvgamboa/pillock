@@ -127,7 +127,7 @@ router.put('/user/edit',async (req,res)=>{
                     })
                 }
             }
-            res.redirect('/LoggedIn/user')
+            //res.redirect('/LoggedIn/user')
         })
         
         con.end(function(err){
@@ -146,6 +146,10 @@ router.put('/user/edit',async (req,res)=>{
         })
     }
 }) 
+
+router.get('/add-device',(req,res)=>{
+    res.render('addDevice', {title: 'Pillock - Add Device'})
+})
 
 function checkAuthenticated(req,res,next){
     if(req.isAuthenticated()){

@@ -1,0 +1,41 @@
+<! DOCTYPE html>
+
+<html lang = "en">
+<head>
+	<meta charset = "UTF-8">
+	<meta name = "viewport" content = "width=device-width,intial-scale=1.0">
+	<link href = "/stylesheets/main.css" rel = "stylesheet">
+	<title><%= title %></title>
+</head>
+
+<body class = "full-height-grow">
+	
+    <%- include('../views/partials/loginHeader.ejs') %>	
+    <div class = "container full-height-grow">
+		<section class = "main-section">
+			<div class = "left">
+				<h1 class = 'index-title'>Add Device</h1>
+				&lt; Insert some witty slogan here  &gt;
+			</div>
+			<div class = "page-content">
+				<div class = "input-group">
+					---ADD DEVICE---
+					<form class = "join-form" action = "/LoggedIn/add-device?_method=PUT" method = "POST">
+						<div>Device ID: <input type = "test" id = "addDevice" name = "addDevice" autofocus required></div>
+						<div class="input-group">
+							<button type="submit" class="btn">Save</button>
+						</div>
+						<div class = "input-group-cancel">
+							<a href = "/LoggedIn/user" class = "input-group-cancel">Cancel</a>
+							<! onclick="history.go(-1)">
+						</div>
+					</form>
+            </div>
+            
+		</section>
+	</div>
+    
+    <%- include('../views/partials/footer.ejs') %>
+
+</body>
+</html>
