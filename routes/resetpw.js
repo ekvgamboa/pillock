@@ -29,22 +29,22 @@ router.put('/', async(req,res)=>{
         })
     
     
-        let getid = `SELECT * FROM userinfo`;
-        con.query(getid, function(error, results) {
-            if (error) {
-            return console.error(error.message);
-            }
-            Object.keys(results).forEach(function(key) {
-                var row = results[key];
-                var i = 0;
-                for (i in results){
-                    if(em == results[i].email){
-                        results[i].web_pw = new_pw
-                    }
-                }
-            });
-            //console.log(users);
-        });
+        // let getid = `SELECT * FROM userinfo`;
+        // con.query(getid, function(error, results) {
+        //     if (error) {
+        //     return console.error(error.message);
+        //     }
+        //     Object.keys(results).forEach(function(key) {
+        //         var row = results[key];
+        //         var i = 0;
+        //         for (i in results){
+        //             if(em == results[i].email){
+        //                 results[i].web_pw = new_pw
+        //             }
+        //         }
+        //     });
+        //     //console.log(users);
+        // });
         con.end(function(err){
             if(err)
                 throw err
