@@ -4,10 +4,9 @@ const bcrypt = require('bcrypt')
 const mysql = require('mysql')
 
 let users = []
-
 try{
     const con = mysql.createConnection({
-        host: process.env.DATABASE_HOST,
+        host: prcoess.env.DATABASE_HOST,
         user: process.env.DATABASE_USER,
         password: process.env.DATABASE_PASS,
         database: process.env.DATABASE_NAME
@@ -43,12 +42,15 @@ try{
         // else
         //     console.log("database closed...")
     });
+    
 }catch{
-    res.redirect('/')
+
 }
 
 router.get('/',async (req,res)=>{
+    
     res.render('signup',{title: "Pillock - Sign Up", message: ""})
+    
 })
 
 router.post('/',checkNotAuthenticated,async(req,res)=>{

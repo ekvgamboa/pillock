@@ -3,13 +3,15 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 const mysql = require('mysql')
-const users = require('./login')
+
+const initializePassport = require('../passport-config')
 
 router.get('/',async (req,res)=>{
     res.render('resetpw',{title: "Pillock - Change Password"})
 })
 
 router.put('/', async(req,res)=>{
+    let users = []
     if(req.body.pw1==req.body.pw2){
         var em= req.body.email
         var new_pw=await bcrypt.hash(req.body.pw2,10)
@@ -27,24 +29,22 @@ router.put('/', async(req,res)=>{
             if (err) throw err;
             // console.log("1 record updated" + result);
         })
-    
-    
-        // let getid = `SELECT * FROM userinfo`;
-        // con.query(getid, function(error, results) {
-        //     if (error) {
-        //     return console.error(error.message);
-        //     }
+        // var s_in = `SELECT * FROM userinfo`
+        // con.query(s_in, function(err,results){
+        //     if(err) throw err;
+
         //     Object.keys(results).forEach(function(key) {
         //         var row = results[key];
-        //         var i = 0;
-        //         for (i in results){
-        //             if(em == results[i].email){
-        //                 results[i].web_pw = new_pw
-        //             }
-        //         }
-        //     });
-        //     //console.log(users);
-        // });
+        //         users.push({id : row.uid_user,
+        //                     first_name : row.name,
+        //                     last_name : row.surname,
+        //                     email : row.email,
+        //                     web_pw : row.web_pw,
+        //                     dob : row.DOB} );
+        //         });
+
+        // })
+        
         con.end(function(err){
             if(err)
                 throw err
@@ -52,7 +52,7 @@ router.put('/', async(req,res)=>{
             //     console.log("database closed...")
         })
         
-        res.redirect('/login')
+        res.redirect('/')
         }
         catch{
             res.redirect('/signup')
