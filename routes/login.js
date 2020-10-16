@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 const passport = require('passport')
 const mysql = require('mysql')
 
+const initializePassport = require('../passport-config')
+
 let users = []
     
 router.get('/', updateUsers,async (req,res)=>{
@@ -24,6 +26,7 @@ function checkNotAuthenticated(req,res,next){
 }
 
 function updateUsers(req,res,next){
+    users = []
     try{
         const con = mysql.createConnection({
             host: process.env.DATABASE_HOST,
@@ -61,7 +64,6 @@ function updateUsers(req,res,next){
 
     }
 
-    const initializePassport = require('../passport-config')
     initializePassport(
         passport,
         email => users.find(user => user.email === email),
