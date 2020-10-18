@@ -20,17 +20,18 @@
 			</div>
 			<div class = "page-content">
 				<div class = "input-group">
-					-- User Profile --
+
 					<% if(message) { %>
 						<%= message %>
 					<% } %>
+					<h1 class = "left">---Edit Profile---</h1>
 					<form class = "join-form" action = "/LoggedIn/user/edit?_method=PUT" method = "POST">
-						<div>Email:<%= email %></div>
-						<div>First:<input type = text id = "first_name" name = "first_name" value = <%= fname%> required></div>
-						<div>Last: <input type = text id = "last_name" name = "last_name" value = <%= lname %> required></div>
+						<div class = "input-group-edit">Email:<%= email %></div>
+						<div class = "input-group-edit">First Name:<input type = text id = "first_name" name = "first_name" value = <%= fname%> required></div>
+						<div class = "input-group-edit">Last Name: <input type = text id = "last_name" name = "last_name" value = <%= lname %> required></div>
 						
-						<div>Date of Birth: <input type="date" id = "birthday" name = "birthday" value = <%= birthday %> required></div>
-						<div>Prescriptions: 
+						<div class = "input-group-edit">Date of Birth: <input type="date" id = "birthday" name = "birthday" value = <%= birthday %> required></div>
+						<div class = "input-group-edit">Prescriptions: 
 							<ul>
 								<!--<li>Asprin</li>
 								<li>Hot Sauce</li>-->
