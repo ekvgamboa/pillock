@@ -50,7 +50,8 @@ router.get('/user/edit',checkAuthenticatedEdit,(req,res)=>{
 })
 
 router.get('/user',checkAuthenticated, async(req,res)=>{
-
+    let u = []
+    let p = []
     try{
         const con = mysql.createConnection({
             host: process.env.DATABASE_HOST,
@@ -59,31 +60,36 @@ router.get('/user',checkAuthenticated, async(req,res)=>{
             database: process.env.DATABASE_NAME
         })
     
-        var db_in=`SELECT * FROM userinfo WHERE uid_user='${req.user.id}'`;
+        var db_in=`SELECT * FROM userinfo LEFT JOIN prescriptions ON userinfo.uid_user = prescriptions.uid_user WHERE userinfo.uid_user='${req.user.id}'`;
         con.query(db_in, function (err, result) {
             if (err) throw err;
             console.log(result)
-            con.query(`SELECT * FROM prescriptions WHERE uid_user='${req.user.id}'`, function(err,prescripts) {
-                if (err) throw err;
-                console.log(prescripts)
+            Object.keys(result).forEach(function(key){
+                var row = result[key]
+                u.push({
+                    prescripts: row.pname,
+                    dosage: row.dosage,
+                    schedule: row.time,
+                    count: row.count
+                })
             })
+            prescript = result[0].pname == null ? '--empty--' : result[0].pname
             newDob = result[0].DOB == null ? '1900-01-01' : result[0].DOB.toISOString().split('T')[0]
             res.render('userpage.ejs',{
             title: "Pillock - Welcome, ",
-            prescript: prescripts,
+            prescript: prescript,
             fname : result[0].name,
             lname: result[0].surname,
             birthdate: newDob,
             email: result[0].email
-            })
-
-
-        })  
+            })  
+        
+        })
         con.end(function(err){
             if(err)
                 throw err
         })   
-    } catch{
+    }catch{
         res.redirect('/')
     }
     
