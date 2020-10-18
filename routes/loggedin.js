@@ -59,22 +59,25 @@ router.get('/user',checkAuthenticated, async(req,res)=>{
             database: process.env.DATABASE_NAME
         })
     
-        var db_in=`SELECT * FROM userinfo`;
+        var db_in=`SELECT * FROM userinfo WHERE uid_user='${req.user.id}'`;
         con.query(db_in, function (err, result) {
             if (err) throw err;
-            for(var i in result){
-                if(req.user.email == result[i].email){
-                    newDob = result[i].DOB == null ? '1900-01-01' : result[i].DOB.toISOString().split('T')[0]
-                    res.render('userpage.ejs',{
-                        title: "Pillock - Welcome, ",
-                        prescript: prescripts,
-                        fname : result[i].name,
-                        lname: result[i].surname,
-                        birthdate: newDob,
-                        email: result[i].email
-                    })
-                }
-            }
+            console.log(result)
+            con.query(`SELECT * FROM prescriptions WHERE uid_user='${req.user.id}'`, function(err,prescripts) {
+                if (err) throw err;
+                console.log(prescripts)
+            })
+            newDob = result[0].DOB == null ? '1900-01-01' : result[0].DOB.toISOString().split('T')[0]
+            res.render('userpage.ejs',{
+            title: "Pillock - Welcome, ",
+            prescript: prescripts,
+            fname : result[0].name,
+            lname: result[0].surname,
+            birthdate: newDob,
+            email: result[0].email
+            })
+
+
         })  
         con.end(function(err){
             if(err)
