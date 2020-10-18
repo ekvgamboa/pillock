@@ -20,13 +20,13 @@
 			</div>
 			<div class = "page-content">
 				<div>
-					<div justify = 'center'>-- User Profile --</div>
+					<h1 class = "left">-- User Profile --</h1>
 					<div>Email: <%= email %></div>
-					<div>First: <%= fname %></div>
-					<div>Last: <%= lname %> </div>
+					<div>First Name: <%= fname %></div>
+					<div>Last Name: <%= lname %> </div>
 					<div>Birthday: <%= birthdate%></div>
 					<div>Device ID: </div>
-					<div>Prescriptions: 
+					<div>Prescriptions: <a href = "/LoggedIn/user/edit" class = "forgot">Add/Edit Prescription</a>
 						<ul>
 							<script language = "JavaScript">
 								var pills = "<%= prescript %>"

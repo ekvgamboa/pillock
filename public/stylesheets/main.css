@@ -295,6 +295,13 @@ body {
 	z-index: 2;
 }
 
+.input-group-edit {
+	/*margin-bottom: 2rem;*/
+	display: flex;
+	flex-direction: column;
+	z-index: 2;
+}
+
 .input-group-cancel a{
 	color: white;
 	background: #B1DDFA;
