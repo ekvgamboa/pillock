@@ -73,11 +73,17 @@ router.get('/user',checkAuthenticated, async(req,res)=>{
                     count: row.count
                 })
             })
-            prescript = result[0].pname == null ? '--empty--' : result[0].pname
+            for(var i in result){
+                if(result[i].pname == null)
+                    p = '--empty--'
+                else
+                    p.push(result[i].pname)
+            }
+
             newDob = result[0].DOB == null ? '1900-01-01' : result[0].DOB.toISOString().split('T')[0]
             res.render('userpage.ejs',{
             title: "Pillock - Welcome, ",
-            prescript: prescript,
+            prescript: p,
             fname : result[0].name,
             lname: result[0].surname,
             birthdate: newDob,
