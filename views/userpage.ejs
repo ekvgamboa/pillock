@@ -1,52 +1,67 @@
 <! DOCTYPE html>
 
-<html lang = "en">
-<head>
-	<meta charset = "UTF-8">
-	<meta name = "viewport" content = "width=device-width,intial-scale=1.0">
-	<link href = "/stylesheets/main.css" rel = "stylesheet">
-	<title><%= title %><%= fname %></title>
-</head>
+	<html lang="en">
 
-<body class = "full-height-grow">
-	
-	<%- include('../views/partials/loginHeader.ejs') %>	
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,intial-scale=1.0">
+		<link href="/stylesheets/main.css" rel="stylesheet">
+		<title><%= title %><%= fname %></title>
+	</head>
 
-	<div class = "container full-height-grow">
-		<section class = "main-section">
-			<div class = "left">
-				<h1 class = 'index-title'>Welcome back, <%= fname %></h1>
-				&lt; Insert some witty slogan here  &gt;
-			</div>
-			<div class = "page-content">
-				<div>
-					<h1 class = "left">-- User Profile --</h1>
-					<div>Email: <%= email %></div>
-					<div>First Name: <%= fname %></div>
-					<div>Last Name: <%= lname %> </div>
-					<div>Birthday: <%= birthdate%></div>
-					<div>Device ID: </div>
-					<div>Prescriptions: <a href = "/LoggedIn/user/edit" class = "forgot">Add/Edit Prescription</a>
-						<ul>
-							<script language = "JavaScript">
-								var pills = "<%= prescript %>"
-								document.write(pills)
-							</script>
-						</ul>
+	<body class="full-height-grow">
+
+		<%- include('../views/partials/loginHeader.ejs') %>
+
+		<div class="container full-height-grow">
+			<section class="main-section">
+				<div class="left">
+					<h1 class='index-title'>Welcome back, <%= fname %></h1>
+					&lt; Insert some witty slogan here &gt;
+				</div>
+				<div class="page-content">
+					<div class="user-page-content">
+						<h1 class="left">-- User Profile --</h1>
+						<div><b>Email:</b> <%= email %></div>
+						<div><b>First Name:</b> <%= fname %></div>
+						<div><b>Last Name:</b> <%= lname %> </div>
+						<div><b>Birthday:</b> <%= birthdate%></div>
+						<div><a href="/LoggedIn/user/edit" class="profile">Edit Profile</a></div>
+						<hr width = "100%" noshade>
+						<div>
+							<b>Device ID:</b>
+							<% if (device == 0 || device == null) {%>
+								<a href="/LoggedIn/add-device" class="profile">Add Device</a>
+							<% } else {%>
+								<%= device %>
+								<div><a href="/LoggedIn/user/edit" class="profile"> Edit Device</a></div>
+							<% } %>
+						</div>
+						<hr width = "100%" noshade>
+						<div><b>Prescriptions:</b> <a href="/LoggedIn/user/edit" class="profile">Add/Edit
+								Prescription</a>
+							<ul>
+								<script language="JavaScript">
+									var pills = "<%= prescript %>"
+									document.write(pills)
+								</script>
+							</ul>
+						</div>
+
+
+						<form class="join-form-edit" action="/logout?_method=DELETE" method="POST" class="join-form">
+							<div class="input-group" style="padding-top:10px;">
+								<button type="submit" class="btn" justify="center">Log Out</button>
+							</div>
+						</form>
 					</div>
 				</div>
-				<div><a href = "/LoggedIn/user/edit">Edit Profile</a></div><div><a href = "/LoggedIn/add-device">Add Device</a></div>
-				<form action = "/logout?_method=DELETE" method = "POST" class = "join-form">
-                    <button type = "submit" class = "btn">Log Out</button>
-                </form>
-            </div>
-            
-		</section>
-	</div>
 
-	<%- include('../views/partials/footer.ejs') %>
+			</section>
+		</div>
 
-</body>
-</html>
+		<%- include('../views/partials/footer.ejs') %>
 
+	</body>
 
+	</html>

@@ -141,6 +141,13 @@ body {
 	-webkit-background-size: cover;
 	background-size: cover;
 }
+
+.main-section-user{
+	display: inline;
+	justify-content: center;
+	flex-grow: 1;
+    align-items: center;
+}
 .footer-logo{
 	margin: auto;
 	text-align: center;
@@ -261,6 +268,19 @@ body {
 	color: #596da0;
 }
 
+.profile{
+	text-decoration: none;
+	/* font-size: 14px; */
+	color: inherit;
+	background-color: none;
+	border: none;
+	text-align: center;
+	padding: 0;
+}
+
+.profile:hover{
+	color: #596da0;
+}
 .left-signup{
 	position: fixed;
 	padding-left: 200px;
@@ -281,7 +301,6 @@ body {
 .join-form-user {
 /* background-color: #C3D3E3;*/
 	background-color: none;
-	
 	padding: 0;
 	border-radius: 20px;
 	z-index: 2;
@@ -300,6 +319,11 @@ body {
 	display: flex;
 	flex-direction: column;
 	z-index: 2;
+}
+
+.input-group-edit-message{
+	display: inline;
+	z-index:2;
 }
 
 .input-group-cancel a{
@@ -359,10 +383,22 @@ body {
       width: 80vw;
       max-width: inherit;
       margin: 2rem 0;
-    }
+	}
+	.join-form-edit{
+		width: 100vw;
+		max-width: inherit;
+		margin: 2rem 0;
+	}
   }
 
-
+.user-page-content{
+	margin-bottom: 2rem;
+	display: flex;
+	flex-direction: column;
+	color: inherit;
+	justify-content: left;
+	align-items: left;
+}
 
 .profile-link input{
 	margin-left: .25rem;
