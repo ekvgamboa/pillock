@@ -26,7 +26,7 @@
 						<div><b>First Name:</b> <%= fname %></div>
 						<div><b>Last Name:</b> <%= lname %> </div>
 						<div><b>Birthday:</b> <%= birthdate%></div>
-						<div><a href="/LoggedIn/user/edit" class="profile">Edit Profile</a></div>
+						<div style="text-align:right;"><a href="/LoggedIn/user/edit" class="profile">Edit Profile</a></div>
 						<hr width = "100%" noshade>
 						<div>
 							<b>Device ID:</b>
@@ -38,8 +38,8 @@
 							<% } %>
 						</div>
 						<hr width = "100%" noshade>
-						<div><b>Prescriptions:</b> <a href="/LoggedIn/user/edit" class="profile">Add/Edit
-								Prescription</a>
+						<div><b>Prescriptions:</b> <a href="/LoggedIn/user/view-prescriptions" class="profile">View
+								Prescription(s)</a>
 							<ul>
 								<script language="JavaScript">
 									var pills = "<%= prescript %>"
