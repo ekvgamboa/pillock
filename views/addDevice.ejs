@@ -20,9 +20,10 @@
 			<div class = "page-content">
 				<div class = "input-group">
 					<h1 class = "left">---ADD DEVICE---</h1>
-					<form class = "join-form" action = "/LoggedIn/add-device?_method=PUT" method = "POST">
-						<div class = "input-group">Device ID: <input type = "text" id = "addDevice" name = "addDevice" autofocus required></div>
-						<div class = "input-group">Set PIN: <input type = "text" id = "setPin" name = "setPin" required></div>
+					<form class = "join-form-edit" action = "/LoggedIn/add-device?_method=PUT" method = "POST">
+						<div class = "input-group"><b>Device ID:</b> <input type = "text" id = "addDevice" name = "addDevice" autofocus required></div>
+						<div class = "input-group"><b>Set PIN:</b> <input type = "text" id = "setPin" name = "setPin" required></div>
+						<div class = "input-group"><b>Confirm PIN:</b> <input type = "text" id = "setPin" name = "setPin" required></div>
 						<div class="input-group">
 							<button type="submit" class="btn">Save</button>
 						</div>

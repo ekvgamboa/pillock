@@ -1,62 +1,71 @@
 <! DOCTYPE html>
 
-<html lang = "en">
-<head>
-	<meta charset = "UTF-8">
-	<meta name = "viewport" content = "width=device-width,intial-scale=1.0">
-	<link href = "/stylesheets/main.css" rel = "stylesheet">
-	<title><%= title %></title>
-</head>
+	<html lang="en">
 
-<body class = "full-height-grow">
-	
-	<%- include('../views/partials/loginHeader.ejs') %>	
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,intial-scale=1.0">
+		<link href="/stylesheets/main.css" rel="stylesheet">
+		<title><%= title %></title>
+	</head>
 
-	<div class = "container full-height-grow">
-		<section class = "main-section">
-			<div class = "left">
-				<h1 class = 'index-title'>Edit Profile</h1>
-				&lt; Insert some witty slogan here  &gt;
-			</div>
-			<div class = "page-content">
-				<div class = "input-group">
+	<body class="full-height-grow">
 
-					<% if(message) { %>
-						<%= message %>
-					<% } %>
-					<h1 class = "left">---Edit Profile---</h1>
-					<form class = "join-form" action = "/LoggedIn/user/edit?_method=PUT" method = "POST">
-						<div class = "input-group-edit">Email:<%= email %></div>
-						<div class = "input-group-edit">First Name:<input type = text id = "first_name" name = "first_name" value = <%= fname%> required></div>
-						<div class = "input-group-edit">Last Name: <input type = text id = "last_name" name = "last_name" value = <%= lname %> required></div>
-						
-						<div class = "input-group-edit">Date of Birth: <input type="date" id = "birthday" name = "birthday" value = <%= birthday %> required></div>
-						<div class = "input-group-edit">Prescriptions: 
-							<ul>
-								<!--<li>Asprin</li>
-								<li>Hot Sauce</li>-->
-								<script language = "javascript">
-									var pills = "<%= prescript %>"
-									document.write(pills)
-								</script>
-							</ul>
-						</div>
-						<div class="input-group">
-							<button type="submit" class="btn">Save</button>
-						</div>
-						<div class = "input-group-cancel">
-							<a href = "/LoggedIn/user">Cancel</a>
-							<! onclick="history.go(-1)">
-						</div>
-					</form>
+		<%- include('../views/partials/loginHeader.ejs') %>
+
+		<div class="container full-height-grow">
+			<section class="main-section">
+				<div class="left">
+					<h1 class='index-title'>Edit Profile</h1>
+					&lt; Insert some witty slogan here &gt;
 				</div>
-				
-            </div>
-            
-		</section>
-	</div>
+				<div class="page-content">
+					<div class="input-group">
+						<h1 class="left">---Edit Profile---</h1>
 
-	<%- include('../views/partials/footer.ejs') %>
+						<form class="join-form-edit" action="/LoggedIn/user/edit?_method=PUT" method="POST">
+							<% if(message) { %>
+							<div class='input-group-edit-message'>
+								<%= message %><a href="/LoggedIn/user" class="profile"> Go Back to Profile</a>
+							</div>
+							<% } %>
+							<div class="input-group-edit">
+								<b>Email:</b>
+							</div>
+							<div class="input-group-edit"><%= email %></div>
+							<div class="input-group-edit"><b>First Name:</b><input type=text id="first_name" name="first_name"
+									value=<%= fname%> required></div>
+							<div class="input-group-edit"><b>Last Name:</b><input type=text id="last_name" name="last_name"
+									value=<%= lname %> required></div>
 
-</body>
-</html>
+							<div class="input-group-edit"><b>Date of Birth:</b><input type="date" id="birthday"
+									name="birthday" value=<%= birthdate %> required></div>
+							<hr width = "100%" noshade>
+							<div class="input-group-edit"><b>Prescriptions:</b>
+								<ul>
+									<script language="javascript">
+										var pills = "<%= prescript %>"
+										document.write(pills)
+									</script>
+								</ul>
+							</div>
+							<div class="input-group">
+								<button type="submit" class="btn">Save</button>
+							</div>
+							<div class="input-group-cancel">
+								<a href="/LoggedIn/user">Cancel</a>
+								<! onclick="history.go(-1)">
+							</div>
+						</form>
+					</div>
+
+				</div>
+
+			</section>
+		</div>
+
+		<%- include('../views/partials/footer.ejs') %>
+
+	</body>
+
+	</html>

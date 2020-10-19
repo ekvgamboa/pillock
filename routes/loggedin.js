@@ -15,6 +15,8 @@ router.get('/about',(req,res)=>{
 router.get('/user/edit',checkAuthenticatedEdit,(req,res)=>{
 
     try{
+        let u = []
+        let p = []
         const con = mysql.createConnection({
             host: process.env.DATABASE_HOST,
             user: process.env.DATABASE_USER,
@@ -22,24 +24,42 @@ router.get('/user/edit',checkAuthenticatedEdit,(req,res)=>{
             database: process.env.DATABASE_NAME
         })
     
-        var db_in=`SELECT * FROM userinfo`;
+        var db_in = `SELECT * FROM userinfo 
+                    LEFT JOIN prescriptions
+                    ON userinfo.uid_user = prescriptions.uid_user
+                    WHERE userinfo.uid_user='${req.user.id}'`;
+
         con.query(db_in, function (err, result) {
             if (err) throw err;
+
+            Object.keys(result).forEach(function(key){
+                var row = result[key]
+                u.push({
+                    prescripts: row.pname,
+                    dosage: row.dosage,
+                    schedule: row.time,
+                    count: row.count
+                })
+            })
             for(var i in result){
-                if(req.user.email == result[i].email){
-                    newDob = result[i].DOB == null ? '1900-01-01' : result[i].DOB.toISOString().split('T')[0]
-                    res.render('editpage.ejs',{
-                        title: "Pillock - Edit Profile",
-                        message: '',
-                        prescript: prescripts,
-                        fname : result[i].name,
-                        lname: result[i].surname,
-                        birthday: newDob,
-                        email: result[i].email
-                    })
-                }
+                if(result[i].pname == null)
+                    p = '--empty--'
+                else
+                    p.push(u[i].prescripts)
             }
-        })
+
+            newDob = result[0].DOB == null ? '1900-01-01' : result[0].DOB.toISOString().split('T')[0]
+            res.render('editpage.ejs',{
+                message: "",
+                title: "Pillock - Edit Profile",
+                prescript: p,
+                fname : result[0].name,
+                lname: result[0].surname,
+                birthdate: newDob,
+                device: result[0].device_number,
+                email: result[0].email
+            })  
+        })    
         con.end(function(err){
             if(err)
                 throw err
@@ -60,10 +80,14 @@ router.get('/user',checkAuthenticated, async(req,res)=>{
             database: process.env.DATABASE_NAME
         })
     
-        var db_in=`SELECT * FROM userinfo LEFT JOIN prescriptions ON userinfo.uid_user = prescriptions.uid_user WHERE userinfo.uid_user='${req.user.id}'`;
+        var db_in = `SELECT * FROM userinfo 
+                    LEFT JOIN prescriptions
+                    ON userinfo.uid_user = prescriptions.uid_user
+                    WHERE userinfo.uid_user='${req.user.id}'`;
+        
         con.query(db_in, function (err, result) {
             if (err) throw err;
-            console.log(result)
+
             Object.keys(result).forEach(function(key){
                 var row = result[key]
                 u.push({
@@ -77,7 +101,7 @@ router.get('/user',checkAuthenticated, async(req,res)=>{
                 if(result[i].pname == null)
                     p = '--empty--'
                 else
-                    p.push(result[i].pname)
+                    p.push(u[i].prescripts)
             }
 
             newDob = result[0].DOB == null ? '1900-01-01' : result[0].DOB.toISOString().split('T')[0]
@@ -87,6 +111,7 @@ router.get('/user',checkAuthenticated, async(req,res)=>{
             fname : result[0].name,
             lname: result[0].surname,
             birthdate: newDob,
+            device: result[0].device_number,
             email: result[0].email
             })  
         
@@ -109,7 +134,8 @@ router.put('/user/edit',async (req,res)=>{
     var b_d= req.body.birthday
 
     try{
-        
+        let u = []
+        let p = []
         const con = mysql.createConnection({
             host: process.env.DATABASE_HOST,
             user: process.env.DATABASE_USER,
@@ -123,25 +149,56 @@ router.put('/user/edit',async (req,res)=>{
         })
 
         //console.log(u)
-        let getid = `SELECT * FROM userinfo`;
-        con.query(getid, function(error, results) {
+        let getid = `SELECT * FROM userinfo 
+                    LEFT JOIN prescriptions
+                    ON userinfo.uid_user = prescriptions.uid_user
+                    WHERE userinfo.uid_user='${req.user.id}'`;
+
+        con.query(getid, function(error, result) {
             if (error) {
                 return console.error(error.message);
             }
-            for(var i in results){
-                if(req.user.email == results[i].email){
-                    newDob = results[i].DOB == null ? '1900-01-01' : results[i].DOB.toISOString().split('T')[0]
-                    res.render('editpage.ejs',{
-                        title: 'Pillock - Edit Success!',
-                        message: 'Succesfully Saved Profile',
-                        prescript: prescripts,
-                        fname: results[i].name,
-                        lname: results[i].surname,
-                        email: results[i].email,
-                        birthday: newDob,
-                    })
-                }
+            // for(var i in results){
+            //     if(req.user.id == results[i].uid_user){
+            //         newDob = results[i].DOB == null ? '1900-01-01' : results[i].DOB.toISOString().split('T')[0]
+            //         res.render('editpage.ejs',{
+            //             title: 'Pillock - Edit Success!',
+            //             message: 'Succesfully Saved Profile',
+            //             prescript: prescripts,
+            //             fname: results[i].name,
+            //             lname: results[i].surname,
+            //             email: results[i].email,
+            //             birthday: newDob,
+            //         })
+            //     }
+            // }
+            Object.keys(result).forEach(function(key){
+                var row = result[key]
+                u.push({
+                    prescripts: row.pname,
+                    dosage: row.dosage,
+                    schedule: row.time,
+                    count: row.count
+                })
+            })
+            for(var i in result){
+                if(result[i].pname == null)
+                    p = '--empty--'
+                else
+                    p.push(u[i].prescripts)
             }
+
+            newDob = result[0].DOB == null ? '1900-01-01' : result[0].DOB.toISOString().split('T')[0]
+            res.render('editpage.ejs',{
+                message: "Successfully Saved Profile!",
+                title: "Pillock - Edit Profile ",
+                prescript: p,
+                fname : result[0].name,
+                lname: result[0].surname,
+                birthdate: newDob,
+                device: result[0].device_number,
+                email: result[0].email
+            })  
             //res.redirect('/LoggedIn/user')
         })
         
