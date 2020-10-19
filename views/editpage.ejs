@@ -22,13 +22,12 @@
 				<div class="page-content">
 					<div class="input-group">
 						<h1 class="left">---Edit Profile---</h1>
-
-						<form class="join-form-edit" action="/LoggedIn/user/edit?_method=PUT" method="POST">
-							<% if(message) { %>
-							<div class='input-group-edit-message'>
-								<%= message %><a href="/LoggedIn/user" class="profile"> Go Back to Profile</a>
+						<% if(message) { %>
+							<div class='input-group-edit-message' style="text-align:center;">
+								<%= message %><a href="/LoggedIn/user" class="profile" style="color:white;"> Go Back to Profile</a>
 							</div>
 							<% } %>
+						<form class="join-form-edit" action="/LoggedIn/user/edit?_method=PUT" method="POST">
 							<div class="input-group-edit">
 								<b>Email:</b>
 							</div>
@@ -41,14 +40,14 @@
 							<div class="input-group-edit"><b>Date of Birth:</b><input type="date" id="birthday"
 									name="birthday" value=<%= birthdate %> required></div>
 							<hr width = "100%" noshade>
-							<div class="input-group-edit"><b>Prescriptions:</b>
+							<!-- <div class="input-group-edit"><b>Prescriptions:</b>
 								<ul>
 									<script language="javascript">
 										var pills = "<%= prescript %>"
 										document.write(pills)
 									</script>
 								</ul>
-							</div>
+							</div> -->
 							<div class="input-group">
 								<button type="submit" class="btn">Save</button>
 							</div>

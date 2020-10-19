@@ -323,7 +323,8 @@ body {
 
 .input-group-edit-message{
 	display: inline;
-	z-index:2;
+	z-index: 2;
+	text-align: center;
 }
 
 .input-group-cancel a{
@@ -408,4 +409,30 @@ body {
 
 .main-nav-item .current-page{
 	color: black;
+}
+
+.prescript-list{
+	list-style: none;
+	color: inherit;
+	margin: 0;
+	margin-right: .5rem;
+	padding: 0;
+}
+
+*{
+	scrollbar-width: thin;
+	scrollbar-color: #596da0 #C3D3E3;
+}
+
+*::-webkit-scrollbar{
+	width: 12px;
+}
+*::-webkit-scrollbar-track{
+	background:  #C3D3E3;
+}
+
+*::-webkit-scrollbar-thumb{
+	background-color: #596da0;
+	border-radius: 20px;
+	border: 3px #C3D3E3;
 }

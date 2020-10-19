@@ -1,0 +1,62 @@
+<! DOCTYPE html>
+
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,intial-scale=1.0">
+        <link href="/stylesheets/main.css" rel="stylesheet">
+        <title><%= title %></title>
+    </head>
+
+    <body class="full-height-grow">
+        <%- include('../views/partials/loginHeader.ejs') %>
+        <div class="container full-height-grow">
+            <section class="main-section">
+                <div class="left">
+                    <h1 class='index-title'>View Prescription(s)</h1>
+                    &lt; Insert some witty slogan here &gt;
+                </div>
+                <div class="page-content">
+                    <div class="user-page-content">
+                        <h1 class="left">-- Prescription(s) --</h1>
+                    </div>
+                    <div style="overflow:auto;overflow-x:hidden;height:145px;">
+                        <ul class="prescript-list">
+                            <% for (var i in prescript){%>
+                            <li><b><%= prescript[i] %>:</b><br>
+                                &emsp;Current Count: <%= count[i] %><br>
+                                &emsp;Refill(s) remaining: <br>
+                                &emsp;Dosage: <%= dosage[i] %><br>
+                                &emsp;Schedule: <%= schedule[i] %></li>
+                            <% } %>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <hr width="100%" noshade>
+                        <div><a href="/LoggedIn/user/edit" class="profile">Edit Prescription(s)</a></div>
+                        <div>Add Prescription(s)</div>
+                        <div class="input-group-cancel" style="padding-top:10px;">
+                            <a href="/LoggedIn/user" class="input-group-cancel" style="padding-top:10px;">Go Back to
+                                Profile</a>
+                        </div>
+                    </div>
+                    <!-- <form class="join-form-edit" action="/logout?_method=DELETE" method="POST" class="join-form">
+                            <div class="input-group" style="padding-top:10px;">
+                                <button type="submit" class="btn" justify="center"></button>
+                            </div>
+                            <div class="input-group-cancel">
+                                <a href="/LoggedIn/user" class="input-group-cancel">Cancel</a>
+                                <! onclick="history.go(-1)">
+                            </div>
+                        </form> -->
+                </div>
+        </div>
+
+        </section>
+        </div>
+        <%- include('../views/partials/footer.ejs') %>
+    </body>
+
+    </html>
