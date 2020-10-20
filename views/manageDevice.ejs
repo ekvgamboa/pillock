@@ -19,18 +19,17 @@
 			</div>
 			<div class = "page-content">
 				<div class = "input-group">
-					<h1 class = "left">---ADD DEVICE---</h1>
-					<% if(status == 0){ %>
-						<div class='input-group-edit-message' style="text-align:center;">
-							<%= message %><a href="/LoggedIn/user" class="profile" style="color:white;"> Go Back to Profile</a>
-						</div>
-					<% } else{ %>
-						<%= message %>
-					<% } %>
-					<form class = "join-form-edit" action = "/LoggedIn/add-device?_method=PUT" method = "POST">
-						<div class = "input-group"><b>Device ID:</b> <input type = "text" id = "addDevice" name = "addDevice" autofocus required></div>
-						<div class = "input-group"><b>Set PIN:</b> <input type = "text" id = "pin1" name = "pin1" required></div>
-						<div class = "input-group"><b>Confirm PIN:</b> <input type = "text" id = "pin2" name = "pin2" required></div>
+					<h1 class = "left">---MANAGE DEVICE---</h1>
+					<form class = "join-form-edit" action = "/LoggedIn/manage-device?_method=PUT" method = "POST">
+                        <div><b>Device ID:</b> <%= deviceID %></div>
+                        <div><b>Prescription(s):</b></div>
+                        <ul class = "prescript-list">
+                            <% for(var i in pname) { %>
+                                <li style="padding-bottom:10px;"><%= pname[i] %><br>
+                                    &emsp;Bin: <input value = "<%= pbin[i] %>">
+                                </li>
+                            <% } %>
+                        </ul>
 						<div class="input-group">
 							<button type="submit" class="btn">Save</button>
 						</div>

@@ -1,26 +1,27 @@
 <! DOCTYPE html>
 
-<html lang = "en">
-<head>
-	<meta charset = "UTF-8">
-	<meta name = "viewport" content = "width=device-width,intial-scale=1.0">
-	<link href = "/stylesheets/main.css" rel = "stylesheet">
-	<title>Pillock - Sign Up</title>
-</head>
+	<html lang="en">
 
-<body class = "full-height-grow">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,intial-scale=1.0">
+		<link href="/stylesheets/main.css" rel="stylesheet">
+		<title>Pillock - Sign Up</title>
+	</head>
 
-	<%- include('../views/partials/header.ejs') %>
-	
-	<div class = "container full-height-grow">
-		<section class = "main-section-signup">
-            <form class="join-form" action = "/signup" method = "POST">
-				<div class = "left">
-					<h1>Sign Up</h1>
-				</div>	
-				<% if (message) {%>
+	<body class="full-height-grow">
+
+		<%- include('../views/partials/header.ejs') %>
+
+		<div class="container full-height-grow">
+			<section class="main-section-signup">
+				<form class="join-form" action="/signup" method="POST">
+					<div class="left">
+						<h1>Sign Up</h1>
+					</div>
+					<% if (message) {%>
 					<%= message %>
-				<%}%>
+					<%}%>
 				<div class="input-group">
 					<label for = "first_name">First Name:</label>
 					<input type="text" id = "first_name" name = "first_name" autofocus required>
@@ -53,11 +54,6 @@
 	</div>
 
 	<%- include('../views/partials/footer.ejs') %>
-	
-<script>
-	
-</script>
-</body>
-</html>
 
-
+	</body>
+	</html>
