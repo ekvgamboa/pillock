@@ -4,11 +4,19 @@ const mysql = require('mysql')
 
 let prescripts = ['aspirin', 'hot sizzle', 'niners suck']
 
+<<<<<<< HEAD
 router.get('/', checkAuthenticated, async (req, res) => {
     res.render('userindex', { title: "Welcome to Pillock" })
 })
 
 router.get('/about', checkAuthenticated, (req, res) => {
+=======
+router.get('/', async (req, res) => {
+    res.render('userindex', { title: "Welcome to Pillock" })
+})
+
+router.get('/about', (req, res) => {
+>>>>>>> b743f7a5f31f5dba608cca932576b62a32783ff1
     res.render('userabout', { title: "Pillock - About Us" })
 })
 
@@ -205,6 +213,7 @@ router.put('/user/edit', async (req, res) => {
     }
 })
 
+<<<<<<< HEAD
 router.get('/add-device', checkAuthenticated, (req, res) => {
     res.render('addDevice', { 
         title: 'Pillock - Add Device',
@@ -256,11 +265,28 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
     let pname = []
     let pbin = []
     try {
+=======
+router.get('/add-device', (req, res) => {
+    res.render('addDevice', { title: 'Pillock - Add Device' })
+})
+
+router.post('/add-device', async (req, res) => {
+
+})
+
+router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
+    try {
+        let pname = []
+        let count = []
+        let dose = []
+        let sched = []
+>>>>>>> b743f7a5f31f5dba608cca932576b62a32783ff1
         const con = mysql.createConnection({
             host: process.env.DATABASE_HOST,
             user: process.env.DATABASE_USER,
             password: process.env.DATABASE_PASS,
             database: process.env.DATABASE_NAME
+<<<<<<< HEAD
         })
         var db_in = `SELECT * FROM userinfo
                     LEFT JOIN prescriptions
@@ -330,6 +356,35 @@ router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
                 schedule: sched
             })
         })
+=======
+        })
+
+        var db_in = `SELECT * FROM prescriptions WHERE uid_user = '${req.user.id}'`;
+        con.query(db_in, function (err, result) {
+            if (err) throw err;
+            if (result.length == 0) {
+                pname.push("--empty--")
+                count.push("none")
+                dose.push("none")
+                sched.push("none")
+            } else {
+                for (var i in result) {
+                    // p.push(result[i].pname)
+                    pname.push(result[i].pname)
+                    count.push(result[i].count)
+                    dose.push(result[i].dosage)
+                    sched.push(result[i].time)
+                }
+            }
+            res.render('prescriptions', {
+                title: "Pillock - View Prescription(s)",
+                prescript: pname,
+                count: count,
+                dosage: dose,
+                schedule: sched
+            })
+        })
+>>>>>>> b743f7a5f31f5dba608cca932576b62a32783ff1
     } catch {
 
     }
