@@ -4,11 +4,11 @@ const mysql = require('mysql')
 
 let prescripts = ['aspirin', 'hot sizzle', 'niners suck']
 
-router.get('/', async (req, res) => {
+router.get('/', checkAuthenticated, async (req, res) => {
     res.render('userindex', { title: "Welcome to Pillock" })
 })
 
-router.get('/about', (req, res) => {
+router.get('/about', checkAuthenticated, (req, res) => {
     res.render('userabout', { title: "Pillock - About Us" })
 })
 
@@ -205,11 +205,90 @@ router.put('/user/edit', async (req, res) => {
     }
 })
 
-router.get('/add-device', (req, res) => {
-    res.render('addDevice', { title: 'Pillock - Add Device' })
+router.get('/add-device', checkAuthenticated, (req, res) => {
+    res.render('addDevice', { 
+        title: 'Pillock - Add Device',
+        message: '',
+        status: 1
+     })
 })
 
-router.post('/add-device', async (req, res) => {
+router.put('/add-device', checkAuthenticated, async (req, res) => {
+    
+    try{
+        const con = mysql.createConnection({
+            host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER,
+            password: process.env.DATABASE_PASS,
+            database: process.env.DATABASE_NAME
+        })
+
+        if(req.body.pin1 == req.body.pin2){
+            var device = req.body.addDevice
+            var pin = req.body.pin1
+
+            var q = `UPDATE userinfo SET device_number = '${device}', passcode = '${pin}' WHERE uid_user = '${req.user.id}'`;
+            con.query(q,function(err,result){
+                if(err)throw err;
+                res.render('addDevice',{
+                    title: 'Pillock - Add Device',
+                    message: "Successfully Added Device! ",
+                    status: 0
+                })
+            })
+        }else{
+            res.render('addDevice',{
+                title: 'Pillock - Add Device',
+                status: 2,
+                message: 'PINs do not match...'
+            })
+        }
+    }catch{
+        res.render('addDevice',{
+            title: 'Pillock - Add Device',
+            status: 3,
+            message: 'Could not add device...'
+        })
+    }
+})
+
+router.get('/manage-device', checkAuthenticated, (req, res) => {
+    let pname = []
+    let pbin = []
+    try {
+        const con = mysql.createConnection({
+            host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER,
+            password: process.env.DATABASE_PASS,
+            database: process.env.DATABASE_NAME
+        })
+        var db_in = `SELECT * FROM userinfo
+                    LEFT JOIN prescriptions
+                    ON userinfo.uid_user = prescriptions.uid_user
+                    WHERE userinfo.uid_user='${req.user.id}'`;
+        con.query(db_in, function (err, result) {
+            if (err) throw err;
+
+            Object.keys(result).forEach(function (key) {
+                var row = result[key]
+                pname.push(row.pname)
+                pbin.push(row.bin)
+            })
+
+            res.render('manageDevice', ({
+                title: 'Pillock - Manage Device',
+                deviceID: result[0].device_number,
+                pbin: pbin,
+                pname: pname
+            }))
+        })
+    } catch {
+
+    }
+
+})
+
+router.put('/manage-device', checkAuthenticated, async (req, res) => {
 
 })
 

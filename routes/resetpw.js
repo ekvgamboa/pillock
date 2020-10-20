@@ -29,22 +29,7 @@ router.put('/', async(req,res)=>{
             if (err) throw err;
             // console.log("1 record updated" + result);
         })
-        // var s_in = `SELECT * FROM userinfo`
-        // con.query(s_in, function(err,results){
-        //     if(err) throw err;
 
-        //     Object.keys(results).forEach(function(key) {
-        //         var row = results[key];
-        //         users.push({id : row.uid_user,
-        //                     first_name : row.name,
-        //                     last_name : row.surname,
-        //                     email : row.email,
-        //                     web_pw : row.web_pw,
-        //                     dob : row.DOB} );
-        //         });
-
-        // })
-        
         con.end(function(err){
             if(err)
                 throw err
