@@ -1,0 +1,55 @@
+<! DOCTYPE html>
+
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,intial-scale=1.0">
+        <link href="/stylesheets/main.css" rel="stylesheet">
+        <title><%= title %></title>
+    </head>
+
+    <body class="full-height-grow">
+
+        <%- include('../views/partials/loginHeader.ejs') %>
+        <div class="container full-height-grow">
+            <section class="main-section">
+                <div class="left">
+                    <h1 class='index-title'>Add Prescription</h1>
+                    &lt; Insert some witty slogan here &gt;
+                </div>
+                <div class="page-content">
+                    <div class="input-group" style="padding-top:25px;overflow:auto;width:45vw;">
+                        <% if(status == 0){ %>
+                        <div class='input-group-edit-message' style="text-align:center;">
+                            <%= message %><a href="/LoggedIn/user/view-prescriptions" class="profile"
+                                style="color:white;"> View prescription(s)</a>
+                        </div>
+                        <% } else{ %>
+                        <%= message %>
+                        <% } %>
+                        <form class="join-form-edit" action="/LoggedIn/add-device?_method=PUT" method="POST">
+                            <div class="input-group"><b>Prescription Name:</b> <input type="text" id="addPrescript"
+                                    name="addPrescript" autofocus required></div>
+                            <div class="input-group"><b>Dosage:</b> <input type="text" id="pin1" name="pin1" required>
+                            </div>
+                            <div class="input-group"><b>Schedule Time:</b> <input type="time" id="pin2" name="pin2"
+                                    required></div>
+                            <div class="input-group">
+                                <button type="submit" class="btn">Save</button>
+                            </div>
+                            <div class="input-group-cancel">
+                                <a href="/LoggedIn/user" class="input-group-cancel">Cancel</a>
+                                <! onclick="history.go(-1)">
+                            </div>
+                        </form>
+                    </div>
+
+            </section>
+        </div>
+
+        <%- include('../views/partials/footer.ejs') %>
+
+    </body>
+
+    </html>

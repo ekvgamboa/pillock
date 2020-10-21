@@ -2,21 +2,11 @@ const express = require('express')
 const router = express.Router()
 const mysql = require('mysql')
 
-let prescripts = ['aspirin', 'hot sizzle', 'niners suck']
-
-<<<<<<< HEAD
 router.get('/', checkAuthenticated, async (req, res) => {
     res.render('userindex', { title: "Welcome to Pillock" })
 })
 
 router.get('/about', checkAuthenticated, (req, res) => {
-=======
-router.get('/', async (req, res) => {
-    res.render('userindex', { title: "Welcome to Pillock" })
-})
-
-router.get('/about', (req, res) => {
->>>>>>> b743f7a5f31f5dba608cca932576b62a32783ff1
     res.render('userabout', { title: "Pillock - About Us" })
 })
 
@@ -213,18 +203,12 @@ router.put('/user/edit', async (req, res) => {
     }
 })
 
-<<<<<<< HEAD
-router.get('/add-device', checkAuthenticated, (req, res) => {
-    res.render('addDevice', { 
-        title: 'Pillock - Add Device',
-        message: '',
-        status: 1
-     })
-})
-
-router.put('/add-device', checkAuthenticated, async (req, res) => {
-    
-    try{
+router.get('/user/prescript', checkAuthenticated, async (req, res) => {
+    let s = []
+    let p = []
+    let d = []
+    let pid = []
+    try {
         const con = mysql.createConnection({
             host: process.env.DATABASE_HOST,
             user: process.env.DATABASE_USER,
@@ -232,28 +216,158 @@ router.put('/add-device', checkAuthenticated, async (req, res) => {
             database: process.env.DATABASE_NAME
         })
 
-        if(req.body.pin1 == req.body.pin2){
+        var db_in = `SELECT * FROM prescriptions
+                    WHERE prescriptions.uid_user='${req.user.id}'`;
+
+        con.query(db_in, function (err, result) {
+            if (err) throw err;
+
+            Object.keys(result).forEach(function (key) {
+                var row = result[key]
+                p.push(row.pname)
+                d.push(row.dosage)
+                s.push(row.time)
+                pid.push(row.uid_prescription)
+            })
+
+            res.render('editprescript.ejs', {
+                title: "Pillock - Edit Prescription(s)",
+                message: "",
+                prescript: p,
+                schedule: s,
+                dosage: d,
+                pid: pid
+            })
+        })
+        con.end(function (err) {
+            if (err)
+                throw err
+        })
+    } catch {
+        res.redirect('/')
+    }
+
+})
+
+router.put('/user/prescript', checkAuthenticated, async (req, res) => {
+    var pillname = req.body.pname
+    var pilldosage = req.body.dosage
+    var schedule = req.body.schedule
+    var p_id = req.body.pid
+    try {
+        let pname = []
+        let count = []
+        let dose = []
+        let sched = []
+        let pid = []
+        const con = mysql.createConnection({
+            host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER,
+            password: process.env.DATABASE_PASS,
+            database: process.env.DATABASE_NAME
+        })
+
+        var db_in = `UPDATE prescriptions
+                      SET pname='${pillname}', dosage='${pilldosage}', time='${schedule}'
+                      WHERE uid_user='${req.user.id}' AND uid_prescription='${p_id}'`;
+
+        con.query(db_in, function (err, result) {
+            if (err) throw err;
+        })
+
+        var update_set = `SELECT * FROM prescriptions where uid_user = '${req.user.id}'`;
+        con.query(update_set,function(err,result){
+            if(err) throw err;
+            if (result.length == 0) {
+                pname.push("--empty--")
+                count.push("none")
+                dose.push("none")
+                sched.push("none")
+            } else {
+                for (var i in result) {
+                    // p.push(result[i].pname)
+                    pname.push(result[i].pname)
+                    count.push(result[i].count)
+                    dose.push(result[i].dosage)
+                    sched.push(result[i].time)
+                    pid.push(result[i].uid_prescription)
+                }
+            }
+            res.render('editprescript.ejs', {
+                title: "Pillock - Edit Prescription(s)",
+                message: "Mikaela is the coolest ever",
+                prescript: pname,
+                count: count,
+                dosage: dose,
+                schedule: sched,
+                pid: pid
+            })
+        })
+        con.end(function (err) {
+            if (err)
+                throw err
+        })
+    }
+    catch {
+        res.render('editpage.ejs', {
+            title: "Pillock - Edit Prescription(s)",
+            message: "Error Editing Prescriptions...",
+            prescript: pname,
+            count: count,
+            dosage: dose,
+            schedule: sched,
+            pid: p_id
+        })
+    }
+})
+
+
+router.get('/add-device', checkAuthenticated, (req, res) => {
+    res.render('addDevice', {
+        title: 'Pillock - Add Device',
+        message: '',
+        status: 1
+    })
+})
+
+router.put('/add-device', checkAuthenticated, async (req, res) => {
+
+    try {
+        const con = mysql.createConnection({
+            host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER,
+            password: process.env.DATABASE_PASS,
+            database: process.env.DATABASE_NAME
+        })
+
+        if (req.body.pin1 == req.body.pin2) {
             var device = req.body.addDevice
             var pin = req.body.pin1
 
             var q = `UPDATE userinfo SET device_number = '${device}', passcode = '${pin}' WHERE uid_user = '${req.user.id}'`;
-            con.query(q,function(err,result){
-                if(err)throw err;
-                res.render('addDevice',{
+            con.query(q, function (err, result) {
+                if (err) throw err;
+                res.render('addDevice', {
                     title: 'Pillock - Add Device',
                     message: "Successfully Added Device! ",
                     status: 0
                 })
             })
-        }else{
-            res.render('addDevice',{
+        } else {
+            res.render('addDevice', {
                 title: 'Pillock - Add Device',
                 status: 2,
                 message: 'PINs do not match...'
             })
         }
-    }catch{
-        res.render('addDevice',{
+        con.end(function (err) {
+            if (err)
+                throw err
+            // else
+            //     console.log("database closed...")
+        });
+    } catch {
+        res.render('addDevice', {
             title: 'Pillock - Add Device',
             status: 3,
             message: 'Could not add device...'
@@ -265,28 +379,11 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
     let pname = []
     let pbin = []
     try {
-=======
-router.get('/add-device', (req, res) => {
-    res.render('addDevice', { title: 'Pillock - Add Device' })
-})
-
-router.post('/add-device', async (req, res) => {
-
-})
-
-router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
-    try {
-        let pname = []
-        let count = []
-        let dose = []
-        let sched = []
->>>>>>> b743f7a5f31f5dba608cca932576b62a32783ff1
         const con = mysql.createConnection({
             host: process.env.DATABASE_HOST,
             user: process.env.DATABASE_USER,
             password: process.env.DATABASE_PASS,
             database: process.env.DATABASE_NAME
-<<<<<<< HEAD
         })
         var db_in = `SELECT * FROM userinfo
                     LEFT JOIN prescriptions
@@ -308,6 +405,12 @@ router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
                 pname: pname
             }))
         })
+        con.end(function (err) {
+            if (err)
+                throw err
+            // else
+            //     console.log("database closed...")
+        });
     } catch {
 
     }
@@ -319,11 +422,11 @@ router.put('/manage-device', checkAuthenticated, async (req, res) => {
 })
 
 router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
+    let pname = []
+    let count = []
+    let dose = []
+    let sched = []
     try {
-        let pname = []
-        let count = []
-        let dose = []
-        let sched = []
         const con = mysql.createConnection({
             host: process.env.DATABASE_HOST,
             user: process.env.DATABASE_USER,
@@ -356,39 +459,24 @@ router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
                 schedule: sched
             })
         })
-=======
-        })
-
-        var db_in = `SELECT * FROM prescriptions WHERE uid_user = '${req.user.id}'`;
-        con.query(db_in, function (err, result) {
-            if (err) throw err;
-            if (result.length == 0) {
-                pname.push("--empty--")
-                count.push("none")
-                dose.push("none")
-                sched.push("none")
-            } else {
-                for (var i in result) {
-                    // p.push(result[i].pname)
-                    pname.push(result[i].pname)
-                    count.push(result[i].count)
-                    dose.push(result[i].dosage)
-                    sched.push(result[i].time)
-                }
-            }
-            res.render('prescriptions', {
-                title: "Pillock - View Prescription(s)",
-                prescript: pname,
-                count: count,
-                dosage: dose,
-                schedule: sched
-            })
-        })
->>>>>>> b743f7a5f31f5dba608cca932576b62a32783ff1
+        con.end(function (err) {
+            if (err)
+                throw err
+            // else
+            //     console.log("database closed...")
+        });
     } catch {
 
     }
 
+})
+
+router.get('/user/add-prescription',checkAuthenticated,async(req,res)=>{
+    res.render('addprescript',{
+        title: "Pillock - Add Prescription",
+        message: '',
+        status: 1
+    })
 })
 
 function checkAuthenticated(req, res, next) {
@@ -421,4 +509,7 @@ function checkAuthenticatedEdit(req, res, next) {
     //next()
 }
 
+function updatePrescripts(req, res, next) {
+    next()
+}
 module.exports = router
