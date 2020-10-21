@@ -36,7 +36,6 @@ try{
         });
     })
 
-    
     con.end(function(err){
         if(err)
             throw err

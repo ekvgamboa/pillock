@@ -18,19 +18,28 @@
                     &lt; Insert some witty slogan here &gt;
                 </div>
                 <div class="page-content">
-                    <div class="user-page-content">
-                        <h1 class="left">-- Prescription(s) --</h1>
-                    </div>
-                    <div style="overflow:auto;overflow-x:hidden;height:145px;">
-
-                        prescription(s)
+                    <div class="input-group" style="overflow:auto;overflow-x:hidden;height:135px;width:45vw;">
+                        <ul class="prescript-list">
+                            <% for(var i in prescript) { %>
+                                <li class="prescript-list" style="padding-bottom:10px;"><b><%= prescript[i] %></b><br>
+                                    &emsp;Count: <%= count[i] %><br>
+                                    &emsp;Dosage: <%= dosage[i] %><br>
+                                    &emsp;Schedule: <input type = "time" value ="<%= schedule[i] %>" style="border:0;"disabled>
+                                </li>
+                                <% if(i < prescript.length-1){%>
+                                    <hr width="100%" noshade>
+                                <% }%>
+                            <% } %>
+                        </ul>
 
                     </div>
 
                     <div>
                         <hr width="100%" noshade>
-                        <div><a href="/LoggedIn/user/edit" class="profile">Edit Prescription(s)</a></div>
-                        <div>Add Prescription(s)</div>
+                        <% if(prescript != "--empty--"){%>
+                        <div><a href="/LoggedIn/user/prescript" class="profile">Edit Prescription(s)</a></div>
+                        <% } %>
+                        <div><a href="/LoggedIn/user/add-prescription" class="profile">Add Prescription(s)</a></div>
                         <div class="input-group-cancel" style="padding-top:10px;">
                             <a href="/LoggedIn/user" class="input-group-cancel" style="padding-top:10px;">Go Back to
                                 Profile</a>

@@ -79,7 +79,7 @@ router.post('/', checkNotAuthenticated, async (req, res) => {
             var db_in = `INSERT INTO userinfo (name, surname, DOB, email, web_pw) VALUES ('${f_n}', '${l_n}', '${bd}','${em}', '${pw}')`;
             con.query(db_in, function (err, result) {
                 if (err) throw err;
-                //console.log("1 record inserted" + result);
+                console.log(result);
             })
 
             let getid = `SELECT uid_user FROM userinfo WHERE email='${em}' `;

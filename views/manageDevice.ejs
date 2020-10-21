@@ -14,19 +14,18 @@
     <div class = "container full-height-grow">
 		<section class = "main-section">
 			<div class = "left">
-				<h1 class = 'index-title'>Add Device</h1>
+				<h1 class = 'index-title'>Manage Device</h1>
 				&lt; Insert some witty slogan here  &gt;
 			</div>
 			<div class = "page-content">
 				<div class = "input-group">
-					<h1 class = "left">---MANAGE DEVICE---</h1>
-					<form class = "join-form-edit" action = "/LoggedIn/manage-device?_method=PUT" method = "POST">
+					<form class = "join-form-edit" action = "/LoggedIn/manage-device?_method=PUT" method = "POST" style="width:45vw;">
                         <div><b>Device ID:</b> <%= deviceID %></div>
                         <div><b>Prescription(s):</b></div>
                         <ul class = "prescript-list">
                             <% for(var i in pname) { %>
                                 <li style="padding-bottom:10px;"><%= pname[i] %><br>
-                                    &emsp;Bin: <input value = "<%= pbin[i] %>">
+                                    &emsp;Bin: <input type = "number" value = "<%= pbin[i] %>" style="width:65px;">
                                 </li>
                             <% } %>
                         </ul>

@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV !== 'production'){
+if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
@@ -12,59 +12,11 @@ const session = require('express-session')
 const methodOverride = require('method-override')
 const expresslayouts = require('express-ejs-layouts')
 
-//test
-// const initializePassport = require('./passport-config')
-// initializePassport(
-//     passport,
-//     email => Users.find(user => user.email === email),
-//     id => Users.find(user => user.id === id)
-// )
-
-// const Users = []
-
 const prescripts = ['aspirin', 'hot sauce', 'niners suck']
 
 const mysql = require('mysql')
 
-// const con = mysql.createConnection({
-//     host: process.env.DATABASE_HOST,
-//     user: process.env.DATABASE_USER,
-//     password: process.env.DATABASE_PASS,
-//     database: process.env.DATABASE_NAME
-// })
-// con.connect(function(err){
-//     if(err)
-//        throw err
-//     else
-//         console.log("Connected")
-// })
-
-// let showinfo = `SELECT * FROM userinfo`;
-// con.query(showinfo, function(error, results, fields) {
-//   if (error) {
-//     return console.error(error.message);
-//   }
- 
-//   Object.keys(results).forEach(function(key) {
-//     var row = results[key];
-//     Users.push({id : row.uid_user,
-//                 first_name : row.name,
-//                 last_name : row.surname,
-//                 email : row.email,
-//                 web_pw : row.web_pw,
-//                 dob : row.DOB} );
-//     });
-//   //console.log(Users);
-// })
-
-// con.end(function(err){
-//     if(err)
-//         throw err
-//     else
-//         console.log("database closed...")
-// });
-
-app.set('view engine','ejs')
+app.set('view engine', 'ejs')
 
 /*app.set('views',__dirname + '/views')
 //app.set('layout','layouts/layout')
@@ -91,46 +43,46 @@ const resetPWRouter = require('./routes/resetpw')
 const loginRouter = require('./routes/login')
 
 //app.use('/',indexRouter)
-app.use('/about',aboutRouter)
-app.use('/LoggedIn',logIndexRouter)
-app.use('/login',loginRouter)
-app.use('/signup',signUpRouter)
-app.use('/Change-Password',resetPWRouter)
+app.use('/about', aboutRouter)
+app.use('/LoggedIn', logIndexRouter)
+app.use('/login', loginRouter)
+app.use('/signup', signUpRouter)
+app.use('/Change-Password', resetPWRouter)
 
 
-app.get('/',checkAuthenticatedHome,(req,res)=>{
-//localhost:3000/
+app.get('/', checkAuthenticatedHome, (req, res) => {
+    //localhost:3000/
     res.render('index.ejs')
 })
 
-app.delete('/logout',(req,res)=>{
+app.delete('/logout', (req, res) => {
     req.logOut()
     res.redirect('/')
 })
 
-function checkAuthenticated(req,res,next){
-    if(req.isAuthenticated()){
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
         return next()
     }
     res.redirect('/login')
 }
 
-function checkAuthenticatedHome(req,res,next){
-    if(req.isAuthenticated()){
+function checkAuthenticatedHome(req, res, next) {
+    if (req.isAuthenticated()) {
         return res.redirect('/LoggedIn')
     }
     next()
 }
 
-function checkNotAuthenticated(req,res,next){
-    if(req.isAuthenticated()){
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
         return res.redirect('/LoggedIn/user')
     }
     next()
 }
 
-function checkAuthenticatedEdit(req,res,next){
-    if(req.isAuthenticated()){
+function checkAuthenticatedEdit(req, res, next) {
+    if (req.isAuthenticated()) {
         //return res.render('editpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email: req.user.email})
         return next()
     }
