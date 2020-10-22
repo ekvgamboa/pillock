@@ -208,6 +208,20 @@ body {
 	}
 }
 
+.delete-btn{
+	border:0;
+	font-size:14;
+	padding:0;
+	background:none;
+	text-decoration: none;
+	outline:none;
+	z-index: 2;
+	cursor: pointer;
+}
+
+.delete-btn:hover{
+	color: white;
+}
 .btn-user{
 	background: none;
 	padding-top: 1rem;
@@ -436,3 +450,4 @@ body {
 	border-radius: 20px;
 	border: 3px #C3D3E3;
 }
+
