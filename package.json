@@ -2,9 +2,6 @@
   "name": "webapp",
   "version": "1.0.0",
   "description": "Senior Design web app",
-  "engines":{
-    "node": "12.11.1"
-  },
   "main": "app.js",
   
   "scripts": {
