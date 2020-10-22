@@ -11,12 +11,12 @@ try {
         password: process.env.DATABASE_PASS,
         database: process.env.DATABASE_NAME
     })
-    // con.connect(function (err) {
-    //     if (err)
-    //         throw err;
-    //     // else
-    //     //     console.log("Connected")
-    // })
+    con.connect(function (err) {
+        // if (err)
+        //     throw err;
+        // else
+        //     console.log("Connected")
+    })
 
     let showinfo = `SELECT * FROM userinfo`;
     con.query(showinfo, function (error, results, fields) {
@@ -38,8 +38,8 @@ try {
     })
 
     con.end(function (err) {
-        if (err)
-            throw err
+        // if (err)
+        //     throw err
         // else
         //     console.log("database closed...")
     });
