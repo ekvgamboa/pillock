@@ -21,11 +21,13 @@
                 </div>
                 <div class="page-content">
                     <div class="input-group">
-                        <% if(message) { %>
+                        <% if(typeof editprescript != undefined && editprescript != '') { %>
                         <div class='input-group-edit-message' style="text-align:center;">
-                            <%= message %><a href="/LoggedIn/user/view-prescriptions" class="profile"
-                                style="color:white;"> Go Back to
-                                Prescriptions</a>
+                            <%- editprescript %><a href="/LoggedIn/user/view-prescriptions" class="profile" style="color:white;"> View Prescription(s)</a>
+                        </div>
+                        <% } else if(typeof errprescript != undefined && errprescript !=''){ %>
+                        <div class='input-group-edit-message' style="text-align:center;">
+                            <%- errprescript %>
                         </div>
                         <% } %>
                         <div style="overflow:auto;overflow-x:hidden;height:325px;width:50vw;">

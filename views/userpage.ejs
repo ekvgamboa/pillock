@@ -26,34 +26,46 @@
 						<div><b>First Name:</b> <%= fname %></div>
 						<div><b>Last Name:</b> <%= lname %> </div>
 						<div><b>Birthday:</b> <%= birthdate%></div>
-						<div style="text-align:right;"><a href="/LoggedIn/user/edit" class="profile">Edit Profile</a></div>
-						<hr width = "100%" noshade>
+						<div style="text-align:right;"><a href="/LoggedIn/user/edit" class="profile">Edit Profile</a>
+						</div>
+						<hr width="100%" noshade>
 						<div>
 							<b>Device ID:</b>
 							<% if (device == 0 || device == null) {%>
-								<a href="/LoggedIn/add-device" class="profile">Add Device</a>
+							--none--
+							<div><a href="/LoggedIn/add-device" class="profile">Add Device</a></div>
 							<% } else {%>
-								<%= device %>
-								<div><a href="/LoggedIn/manage-device" class="profile">Manage Device</a></div>
+							<%= device %>
+							<div><b>Bins in-use: </b><%= pbin %></div>
+							<div><a href="/LoggedIn/manage-device" class="profile">Manage Device</a></div>
 							<% } %>
 						</div>
-						<hr width = "100%" noshade>
-						<div><b>Prescriptions:</b> <a href="/LoggedIn/user/view-prescriptions" class="profile">View
-								Prescription(s)</a>
-							<ul>
+						<hr width="100%" noshade>
+						<div>
+							<b><a href="/LoggedIn/user/view-prescriptions" class="profile">View Prescription(s)</a></b>
+							<!-- <ul>
 								<script language="JavaScript">
 									var pills = "<%= prescript %>"
 									document.write(pills)
 								</script>
-							</ul>
+							</ul> -->
 						</div>
-
+						<hr width="100%" noshade>
 
 						<form class="join-form-edit" action="/logout?_method=DELETE" method="POST" class="join-form">
-							<div class="input-group" style="padding-top:10px;">
+							<div class="input-group" style="padding-top:5px;">
 								<button type="submit" class="btn" justify="center">Log Out</button>
 							</div>
 						</form>
+						<div style="display:flex;justify-content: center;">
+							<input class="delete-btn" id="delete_user" name="delete_user" type='button'
+								value="delete profile" onclick="warn();">
+						</div>
+						<script type="text/javascript">
+							function warn() {
+								confirm("Are you sure you want to do that?");
+							}
+						</script>
 					</div>
 				</div>
 

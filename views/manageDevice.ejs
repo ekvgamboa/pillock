@@ -19,17 +19,29 @@
 			</div>
 			<div class = "page-content">
 				<div class = "input-group">
+					<% if(typeof editdev != undefined && editdev != '') { %>
+						<div class='input-group-edit-message' style="text-align:center;">
+							<%- editdev %><a href="/LoggedIn/user" class="profile" style="color:white;"> Go Back to
+								Profile</a>
+						</div>
+						<% } else if(typeof errdev != undefined && errdev !=''){ %>
+						<div class='input-group-edit-message' style="text-align:center;">
+							<%- errdev %>
+						</div>
+						<% } %>
 					<form class = "join-form-edit" action = "/LoggedIn/manage-device?_method=PUT" method = "POST" style="width:45vw;">
                         <div><b>Device ID:</b> <%= deviceID %></div>
                         <div><b>Prescription(s):</b></div>
                         <ul class = "prescript-list">
-                            <% for(var i in pname) { %>
+							<% var i = 0 %>
+							<% for( i in pname) { %>
+								<input value = "<%=pid[i]%>" id="pid" name="pid" style="display:none;">
                                 <li style="padding-bottom:10px;"><%= pname[i] %><br>
-                                    &emsp;Bin: <input type = "number" value = "<%= pbin[i] %>" style="width:65px;">
+                                    &emsp;Bin: <input type = "number" value = "<%= pbin[i]%>" id="pbin" name= "pbin" style="width:65px;">
                                 </li>
                             <% } %>
                         </ul>
-						<div class="input-group">
+						<div class="input-group" style="margin-bottom:1rem;">
 							<button type="submit" class="btn">Save</button>
 						</div>
 						<div class = "input-group-cancel">

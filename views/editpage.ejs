@@ -20,26 +20,31 @@
 					&lt; Insert some witty slogan here &gt;
 				</div>
 				<div class="page-content">
-					<div class="input-group">
-						<h1 class="left">---Edit Profile---</h1>
-						<% if(message) { %>
-							<div class='input-group-edit-message' style="text-align:center;">
-								<%= message %><a href="/LoggedIn/user" class="profile" style="color:white;"> Go Back to Profile</a>
-							</div>
-							<% } %>
-						<form class="join-form-edit" action="/LoggedIn/user/edit?_method=PUT" method="POST">
+					<div class="input-group" style="padding-top:15px;">
+						<% if(typeof edituser != undefined && edituser != '') { %>
+						<div class='input-group-edit-message' style="text-align:center;">
+							<%- edituser %><a href="/LoggedIn/user" class="profile" style="color:white;"> Go Back to
+								Profile</a>
+						</div>
+						<% } else if(typeof erruser != undefined && erruser !=''){ %>
+						<div class='input-group-edit-message' style="text-align:center;">
+							<%- erruser %>
+						</div>
+						<% } %>
+						<form class="join-form-edit" action="/LoggedIn/user/edit?_method=PUT" method="POST"
+							style="width:45vw;padding-top:25px;">
 							<div class="input-group-edit">
 								<b>Email:</b>
 							</div>
 							<div class="input-group-edit"><%= email %></div>
-							<div class="input-group-edit"><b>First Name:</b><input type=text id="first_name" name="first_name"
-									value=<%= fname%> required></div>
-							<div class="input-group-edit"><b>Last Name:</b><input type=text id="last_name" name="last_name"
-									value=<%= lname %> required></div>
+							<div class="input-group-edit"><b>First Name:</b><input type=text id="first_name"
+									name="first_name" value=<%= fname%> required></div>
+							<div class="input-group-edit"><b>Last Name:</b><input type=text id="last_name"
+									name="last_name" value=<%= lname %> required></div>
 
 							<div class="input-group-edit"><b>Date of Birth:</b><input type="date" id="birthday"
 									name="birthday" value=<%= birthdate %> required></div>
-							<hr width = "100%" noshade>
+							<hr width="100%" noshade>
 							<!-- <div class="input-group-edit"><b>Prescriptions:</b>
 								<ul>
 									<script language="javascript">
@@ -48,10 +53,10 @@
 									</script>
 								</ul>
 							</div> -->
-							<div class="input-group">
+							<div class="input-group" style="margin-bottom:15px;">
 								<button type="submit" class="btn">Save</button>
 							</div>
-							<div class="input-group-cancel">
+							<div class="input-group-cancel" style="padding-top:0;">
 								<a href="/LoggedIn/user">Cancel</a>
 								<! onclick="history.go(-1)">
 							</div>

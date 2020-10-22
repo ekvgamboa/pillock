@@ -10,6 +10,68 @@ router.get('/about', checkAuthenticated, (req, res) => {
     res.render('userabout', { title: "Pillock - About Us" })
 })
 
+router.get('/user', checkAuthenticated, async (req, res) => {
+    let u = []
+    let p = []
+    let b = []
+    try {
+        const con = mysql.createConnection({
+            host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER,
+            password: process.env.DATABASE_PASS,
+            database: process.env.DATABASE_NAME
+        })
+
+        var db_in = `SELECT * FROM userinfo 
+                    LEFT JOIN prescriptions
+                    ON userinfo.uid_user = prescriptions.uid_user
+                    WHERE userinfo.uid_user='${req.user.id}'`;
+
+        con.query(db_in, function (err, result) {
+            if (err) throw err;
+
+            Object.keys(result).forEach(function (key) {
+                var row = result[key]
+                u.push({
+                    prescripts: row.pname,
+                    dosage: row.dosage,
+                    schedule: row.time,
+                    count: row.count,
+                    bin: row.bin
+                })
+            })
+            for (var i in result) {
+                if (result[i].pname == null)
+                    p = '--empty--'
+                else
+                    p.push(u[i].prescripts)
+                b.push(u[i].bin)
+            }
+
+            newDob = result[0].DOB == null ? '1900-01-01' : result[0].DOB.toISOString().split('T')[0]
+            res.render('userpage.ejs', {
+                title: "Pillock - Welcome, ",
+                prescript: p,
+                fname: result[0].name,
+                lname: result[0].surname,
+                birthdate: newDob,
+                device: result[0].device_number,
+                email: result[0].email,
+                pbin: b
+            })
+
+        })
+        con.end(function (err) {
+            if (err)
+                throw err
+        })
+    } catch {
+        res.redirect('/')
+    }
+
+
+})
+
 router.get('/user/edit', checkAuthenticatedEdit, (req, res) => {
 
     try {
@@ -48,7 +110,8 @@ router.get('/user/edit', checkAuthenticatedEdit, (req, res) => {
 
             newDob = result[0].DOB == null ? '1900-01-01' : result[0].DOB.toISOString().split('T')[0]
             res.render('editpage.ejs', {
-                message: "",
+                edituser: req.flash('edituser'),
+                erruser: req.flash('erruser'),
                 title: "Pillock - Edit Profile",
                 prescript: p,
                 fname: result[0].name,
@@ -65,64 +128,6 @@ router.get('/user/edit', checkAuthenticatedEdit, (req, res) => {
     } catch {
         res.redirect('/')
     }
-})
-
-router.get('/user', checkAuthenticated, async (req, res) => {
-    let u = []
-    let p = []
-    try {
-        const con = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASS,
-            database: process.env.DATABASE_NAME
-        })
-
-        var db_in = `SELECT * FROM userinfo 
-                    LEFT JOIN prescriptions
-                    ON userinfo.uid_user = prescriptions.uid_user
-                    WHERE userinfo.uid_user='${req.user.id}'`;
-
-        con.query(db_in, function (err, result) {
-            if (err) throw err;
-
-            Object.keys(result).forEach(function (key) {
-                var row = result[key]
-                u.push({
-                    prescripts: row.pname,
-                    dosage: row.dosage,
-                    schedule: row.time,
-                    count: row.count
-                })
-            })
-            for (var i in result) {
-                if (result[i].pname == null)
-                    p = '--empty--'
-                else
-                    p.push(u[i].prescripts)
-            }
-
-            newDob = result[0].DOB == null ? '1900-01-01' : result[0].DOB.toISOString().split('T')[0]
-            res.render('userpage.ejs', {
-                title: "Pillock - Welcome, ",
-                prescript: p,
-                fname: result[0].name,
-                lname: result[0].surname,
-                birthdate: newDob,
-                device: result[0].device_number,
-                email: result[0].email
-            })
-
-        })
-        con.end(function (err) {
-            if (err)
-                throw err
-        })
-    } catch {
-        res.redirect('/')
-    }
-
-
 })
 
 router.put('/user/edit', async (req, res) => {
@@ -173,33 +178,20 @@ router.put('/user/edit', async (req, res) => {
             }
 
             newDob = result[0].DOB == null ? '1900-01-01' : result[0].DOB.toISOString().split('T')[0]
-            res.render('editpage.ejs', {
-                message: "Successfully Saved Profile!",
-                title: "Pillock - Edit Profile ",
-                prescript: p,
-                fname: result[0].name,
-                lname: result[0].surname,
-                birthdate: newDob,
-                device: result[0].device_number,
-                email: result[0].email
-            })
-            //res.redirect('/LoggedIn/user')
+
+            req.flash('edituser', 'Successfully saved profile!')
+            res.redirect("/LoggedIn/user/edit")
         })
 
         con.end(function (err) {
             if (err)
                 throw err
+            // console.log("database closed...")
         })
     }
     catch {
-        res.render('editpage.ejs', {
-            message: "Error Editing Profile...",
-            prescript: p,
-            fname: req.user.first_name,
-            lname: req.user.last_name,
-            email: req.user.email,
-            birthday: newDob
-        })
+        req.flash('erruser', 'Error saving profile...')
+        res.redirect('/LoggedIn/user/edit')
     }
 })
 
@@ -232,7 +224,8 @@ router.get('/user/prescript', checkAuthenticated, async (req, res) => {
 
             res.render('editprescript.ejs', {
                 title: "Pillock - Edit Prescription(s)",
-                message: "",
+                editprescript: req.flash('editprescript'),
+                errprescript: req.flash('errprescript'),
                 prescript: p,
                 schedule: s,
                 dosage: d,
@@ -276,8 +269,8 @@ router.put('/user/prescript', checkAuthenticated, async (req, res) => {
         })
 
         var update_set = `SELECT * FROM prescriptions where uid_user = '${req.user.id}'`;
-        con.query(update_set,function(err,result){
-            if(err) throw err;
+        con.query(update_set, function (err, result) {
+            if (err) throw err;
             if (result.length == 0) {
                 pname.push("--empty--")
                 count.push("none")
@@ -293,15 +286,8 @@ router.put('/user/prescript', checkAuthenticated, async (req, res) => {
                     pid.push(result[i].uid_prescription)
                 }
             }
-            res.render('editprescript.ejs', {
-                title: "Pillock - Edit Prescription(s)",
-                message: "Mikaela is the coolest ever",
-                prescript: pname,
-                count: count,
-                dosage: dose,
-                schedule: sched,
-                pid: pid
-            })
+            req.flash('editprescript', 'Successfully Saved Prescription(s)!')
+            res.redirect('/LoggedIn/user/prescript')
         })
         con.end(function (err) {
             if (err)
@@ -309,15 +295,8 @@ router.put('/user/prescript', checkAuthenticated, async (req, res) => {
         })
     }
     catch {
-        res.render('editpage.ejs', {
-            title: "Pillock - Edit Prescription(s)",
-            message: "Error Editing Prescriptions...",
-            prescript: pname,
-            count: count,
-            dosage: dose,
-            schedule: sched,
-            pid: p_id
-        })
+        req.flash('errprescript', 'Error saving prescription(s)...')
+        res.redirect('/LoggedIn/user/prescript')
     }
 })
 
@@ -325,8 +304,9 @@ router.put('/user/prescript', checkAuthenticated, async (req, res) => {
 router.get('/add-device', checkAuthenticated, (req, res) => {
     res.render('addDevice', {
         title: 'Pillock - Add Device',
-        message: '',
-        status: 1
+        addSuccess: req.flash('addSuccess'),
+        addError: req.flash('addError'),
+        errPin: req.flash('errPin')
     })
 })
 
@@ -347,18 +327,12 @@ router.put('/add-device', checkAuthenticated, async (req, res) => {
             var q = `UPDATE userinfo SET device_number = '${device}', passcode = '${pin}' WHERE uid_user = '${req.user.id}'`;
             con.query(q, function (err, result) {
                 if (err) throw err;
-                res.render('addDevice', {
-                    title: 'Pillock - Add Device',
-                    message: "Successfully Added Device! ",
-                    status: 0
-                })
+                req.flash('addSuccess', 'Successfully added device!')
+                res.redirect('/add-device')
             })
         } else {
-            res.render('addDevice', {
-                title: 'Pillock - Add Device',
-                status: 2,
-                message: 'PINs do not match...'
-            })
+            req.flash('errPin', 'PINs do not match...')
+            res.redirect('/add-device')
         }
         con.end(function (err) {
             if (err)
@@ -367,18 +341,16 @@ router.put('/add-device', checkAuthenticated, async (req, res) => {
             //     console.log("database closed...")
         });
     } catch {
-        res.render('addDevice', {
-            title: 'Pillock - Add Device',
-            status: 3,
-            message: 'Could not add device...'
-        })
+        req.flash('addError', 'Could not add device...')
+        res.redirect('/add-device')
     }
 })
 
 router.get('/manage-device', checkAuthenticated, (req, res) => {
-    let pname = []
-    let pbin = []
     try {
+        let pname = []
+        let pbin = []
+        let pid = []
         const con = mysql.createConnection({
             host: process.env.DATABASE_HOST,
             user: process.env.DATABASE_USER,
@@ -389,6 +361,7 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
                     LEFT JOIN prescriptions
                     ON userinfo.uid_user = prescriptions.uid_user
                     WHERE userinfo.uid_user='${req.user.id}'`;
+
         con.query(db_in, function (err, result) {
             if (err) throw err;
 
@@ -396,13 +369,17 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
                 var row = result[key]
                 pname.push(row.pname)
                 pbin.push(row.bin)
+                pid.push(row.uid_prescription)
             })
 
             res.render('manageDevice', ({
                 title: 'Pillock - Manage Device',
+                editdev: req.flash('editdev'),
+                errdev: req.flash('errdev'),
                 deviceID: result[0].device_number,
                 pbin: pbin,
-                pname: pname
+                pname: pname,
+                pid: pid
             }))
         })
         con.end(function (err) {
@@ -412,13 +389,54 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
             //     console.log("database closed...")
         });
     } catch {
-
+        res.redirect('/')
     }
 
 })
 
 router.put('/manage-device', checkAuthenticated, async (req, res) => {
 
+    try {
+
+        let b = req.body.pbin
+        let p = req.body.pid
+
+        const con = mysql.createConnection({
+            host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER,
+            password: process.env.DATABASE_PASS,
+            database: process.env.DATABASE_NAME
+        })
+
+        for (var i in p) {
+
+            var db_in = `UPDATE prescriptions SET bin = '${b[i]}' WHERE uid_prescription='${p[i]}'`;
+            con.query(db_in, function (err, result) {
+                if (err) throw err;
+            })
+        }
+
+        var sel_in = `SELECT * FROM userinfo
+                    LEFT JOIN prescriptions
+                    ON userinfo.uid_user = prescriptions.uid_user
+                    WHERE userinfo.uid_user='${req.user.id}'`;
+
+        con.query(sel_in, function (err, result) {
+            if (err) throw err;
+            req.flash('editdev', 'Successfully saved device!')
+            res.redirect('/LoggedIn/manage-device')
+        })
+
+        con.end(function (err) {
+            if (err)
+                throw err
+            // else
+            //     console.log("database closed...")
+        });
+    } catch {
+        req.flash('errdev', 'Error saving device...')
+        res.redirect('/LoggedIn/manage-device')
+    }
 })
 
 router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
@@ -471,8 +489,8 @@ router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
 
 })
 
-router.get('/user/add-prescription',checkAuthenticated,async(req,res)=>{
-    res.render('addprescript',{
+router.get('/user/add-prescription', checkAuthenticated, async (req, res) => {
+    res.render('addprescript', {
         title: "Pillock - Add Prescription",
         message: '',
         status: 1
