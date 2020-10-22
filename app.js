@@ -60,34 +60,11 @@ app.delete('/logout', (req, res) => {
     res.redirect('/')
 })
 
-function checkAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next()
-    }
-    res.redirect('/login')
-}
-
 function checkAuthenticatedHome(req, res, next) {
     if (req.isAuthenticated()) {
         return res.redirect('/LoggedIn')
     }
     next()
-}
-
-function checkNotAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return res.redirect('/LoggedIn/user')
-    }
-    next()
-}
-
-function checkAuthenticatedEdit(req, res, next) {
-    if (req.isAuthenticated()) {
-        //return res.render('editpage.ejs',{fname: req.user.first_name, lname: req.user.last_name, email: req.user.email})
-        return next()
-    }
-    res.redirect('/login')
-    //next()
 }
 
 app.listen(process.env.PORT || 3000)
