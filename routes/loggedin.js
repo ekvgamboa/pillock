@@ -72,6 +72,32 @@ router.get('/user', checkAuthenticated, async (req, res) => {
 
 })
 
+router.delete('/user', async (req, res) => {
+    try {
+        const con = mysql.createConnection({
+            host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER,
+            password: process.env.DATABASE_PASS,
+            database: process.env.DATABASE_NAME
+        })
+
+        var del_user = `DELETE FROM userinfo WHERE uid_user = '${req.user.id}'`;
+        con.query(del_user, function (err) {
+            if (err) throw err;
+            console.log("YOU JUST DROPPED THAT DUNDUNDUN!")
+            req.logout()
+            res.redirect('/')
+        })
+
+        con.end(function (err) {
+            if (err) throw err;
+        })
+
+    } catch {
+        res.redirect('/LoggedIn/user')
+    }
+})
+
 router.get('/user/edit', checkAuthenticatedEdit, (req, res) => {
 
     try {
@@ -527,7 +553,7 @@ function checkAuthenticatedEdit(req, res, next) {
     //next()
 }
 
-function updatePrescripts(req, res, next) {
+function warn(req, res, next) {
     next()
 }
 module.exports = router

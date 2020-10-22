@@ -18,9 +18,11 @@
             <div class = "left">
                 <h1>Change Password</h1>
             </div>
-		    <% if (messages.error) { %>
-				<%= messages.error %>
-		    <% } %>
+		    <% if (typeof message != undefined && message !='') { %>
+				<%= message %>
+            <% } else if(typeof passwordm != undefined && passwordm != ''){ %>
+                <%= passwordm %>
+            <% } %>
             <form class="join-form" action="/Change-Password?_method=PUT" method="POST">
                 <div class="input-group">
                     <label for = "email">Enter Email:</label>
