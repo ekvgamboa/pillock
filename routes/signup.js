@@ -12,8 +12,8 @@ try {
         database: process.env.DATABASE_NAME
     })
     con.connect(function (err) {
-        // if (err)
-        //     throw err;
+        if (err)
+            throw err;
         // else
         //     console.log("Connected")
     })
@@ -38,8 +38,8 @@ try {
     })
 
     con.end(function (err) {
-        // if (err)
-        //     throw err
+        if (err)
+            throw err
         // else
         //     console.log("database closed...")
     });
