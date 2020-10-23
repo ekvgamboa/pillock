@@ -9,7 +9,7 @@
         <title><%= title %></title>
     </head>
 
-    <body class="full-height-grow">
+    <body class="full-height-grow" onload="javascript:hideTxt()">
         <%- include('../views/partials/loginHeader.ejs') %>
         <div class="container full-height-grow">
             <section class="main-section">
@@ -18,33 +18,49 @@
                     &lt; Insert some witty slogan here &gt;
                 </div>
                 <div class="page-content">
-                    <div class="input-group" style="overflow:auto;overflow-x:hidden;height:145px;width:45vw;">
+                    <% if (typeof success != undefined && success !=''){ %>
+                    <div id="success-txt"><%= success %></div>
+                    
+                    <% } %>
+                    <script>
+                        function doHide(){
+                            document.getElementById('success-txt').style.display="none";
+                        }
+                        function hideTxt(){
+                            setTimeout("doHide()",3000);
+                        }
+                    </script>
+                    <div class="input-group" style="overflow:auto;overflow-x:hidden;height:225px;width:45vw;">
                         <ul class="prescript-list">
                             <% for(var i in prescript) { %>
-                                <li class="prescript-list" style="padding-bottom:10px;"><b><%= prescript[i] %></b><br>
-                                    &emsp;Count: <%= count[i] %><br>
-                                    &emsp;Dosage: <%= dosage[i] %><br>
-                                    &emsp;Schedule: <input style="font:inherit;border:0;" type = "time" value ="<%= schedule[i] %>" style="border:0;"disabled>
-                                </li>
-                                <div style="display:flex;justify-content: center;">
-                                    <form method="POST" action="/LoggedIn/user/view-prescriptions?_method=DELETE">
-                                        <input class="delete-btn" id="delete_user" name="delete_user" type='submit'
-                                            value="delete prescription" onclick="warn()">
-                                    </form>
-                                </div>
-                                <script type="text/javascript">
-                                    function warn() {
-                                        if (confirm("Are you sure you want to drop that dundundun?")) {
-                                            alert("YOU JUST DROPPED THAT DUNDUNDUN!")
-                                            next()
-                                        } else {
-                                            res.redirect('/LoggedIn/user')
-                                        }
+                            <li class="prescript-list" style="padding-bottom:10px;"><b><%= prescript[i] %></b><br>
+                                &emsp;Count: <%= count[i] %><br>
+                                &emsp;Dosage: <%= dosage[i] %><br>
+                                &emsp;Schedule: <input style="font:inherit;border:0;" type="time"
+                                    value="<%= schedule[i] %>" style="border:0;" disabled>
+                            </li>
+                            <%if(pid[i] !=''){ %>
+                            <div style="display:flex;justify-content: center;">
+                                <form method="POST" action="/LoggedIn/user/view-prescriptions?_method=DELETE">
+                                    <input type='text' id="pid" name="pid" value="<%= pid[i] %>" style="display:none;">
+                                    <input class="delete-btn" id="delete_user" name="delete_user" type='submit'
+                                        value="delete prescription" onclick="warn()" style="border:0;">
+                                </form>
+                            </div>
+                            <% } %>
+                            <script type="text/javascript">
+                                function warn() {
+                                    if (confirm("Are you sure you want to drop that dundundun?")) {
+                                        alert("YOU JUST DROPPED THAT DUNDUNDUN!")
+                                        next()
+                                    } else {
+                                        res.redirect('/LoggedIn/user')
                                     }
-                                </script>
-                                <% if(i < prescript.length-1){%>
-                                    <hr width="100%" noshade>
-                                <% }%>
+                                }
+                            </script>
+                            <% if(i < prescript.length-1){%>
+                            <hr width="100%" noshade>
+                            <% }%>
                             <% } %>
                         </ul>
 

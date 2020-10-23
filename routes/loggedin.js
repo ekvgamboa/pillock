@@ -384,6 +384,7 @@ router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
     let count = []
     let dose = []
     let sched = []
+    let pid = []
     try {
 
         var db_in = `SELECT * FROM prescriptions WHERE uid_user = '${req.user.id}'`;
@@ -394,6 +395,7 @@ router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
                 count.push("none")
                 dose.push("none")
                 sched.push("none")
+                pid.push('')
             } else {
                 for (var i in result) {
                     // p.push(result[i].pname)
@@ -401,15 +403,18 @@ router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
                     count.push(result[i].count)
                     dose.push(result[i].dosage)
                     sched.push(result[i].time)
+                    pid.push(result[i].uid_prescription)
                 }
             }
 
             res.render('prescriptions', {
                 title: "Pillock - View Prescription(s)",
+                success: req.flash('success'),
                 prescript: pname,
                 count: count,
                 dosage: dose,
-                schedule: sched
+                schedule: sched,
+                pid: pid
             })
         })
     } catch {
@@ -419,7 +424,24 @@ router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
 })
 
 router.delete('/user/view-prescriptions', checkAuthenticated, async (req, res) => {
-    res.redirect('/LoggedIn/user/view-prescriptions')
+    let pid = req.body.pid
+    try {
+
+        var del_pre = `DELETE FROM prescriptions WHERE uid_prescription = '${pid}'`;
+        // con.query(del_pre, function (err) {
+        //     if (err) return console.log(err);
+        //     req.flash('success', "Successfully deleted prescription!")
+        //     res.redirect('/LoggedIn/user/view-prescriptions')
+        // })
+        req.flash('success', "Successfully deleted prescription!")
+            res.redirect('/LoggedIn/user/view-prescriptions')
+
+
+    } catch {
+        req.flash('success', "Error deleting prescription...")
+        res.redirect('/LoggedIn/user/view-prescriptions')
+    }
+    // res.redirect('/LoggedIn/user/view-prescriptions')
 })
 
 router.get('/user/add-prescription', checkAuthenticated, async (req, res) => {
