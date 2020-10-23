@@ -24,6 +24,7 @@
     "nodemon": "^2.0.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "protractor": "^4.0.8"
+    "protractor": "^4.0.8",
+    "sqreen": "^1.55.0"
   }
 }
