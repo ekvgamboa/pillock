@@ -5,6 +5,7 @@ require('sqreen')
 
 const express = require('express')
 const app = express()
+const fs = require('fs')
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 const flash = require('express-flash')
@@ -15,6 +16,14 @@ const expresslayouts = require('express-ejs-layouts')
 const prescripts = ['aspirin', 'hot sauce', 'niners suck']
 
 const mysql = require('mysql')
+
+
+const options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+};
+
+var https = require('https');
 
 app.set('view engine', 'ejs')
 
@@ -67,4 +76,5 @@ function checkAuthenticatedHome(req, res, next) {
     next()
 }
 
-app.listen(process.env.PORT || 3000)
+// app.listen(process.env.PORT || 3000)
+https.createServer(options,app).listen(process.env.PORT || 3000)
