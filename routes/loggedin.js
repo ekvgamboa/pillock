@@ -289,15 +289,15 @@ router.put('/add-device', checkAuthenticated, async (req, res) => {
                 if (err) throw err;
 
                 req.flash('addSuccess', 'Successfully added device!')
-                res.redirect('/add-device')
+                res.redirect('/LoggedIn/add-device')
             })
         } else {
             req.flash('errPin', 'PINs do not match...')
-            res.redirect('/add-device')
+            res.redirect('/LoggedIn/add-device')
         }
     } catch {
         req.flash('addError', 'Could not add device...')
-        res.redirect('/add-device')
+        res.redirect('/LoggedIn/add-device')
     }
 })
 
@@ -306,16 +306,6 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
         let pname = []
         let pbin = []
         let pid = []
-        const con = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASS,
-            database: process.env.DATABASE_NAME
-        })
-
-        con.connect(function (err) {
-            if (err) throw err;
-        })
 
         var db_in = `SELECT * FROM userinfo
                     LEFT JOIN prescriptions
@@ -351,10 +341,10 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
 router.put('/manage-device', checkAuthenticated, async (req, res) => {
 
     try {
-
-        let b = req.body.pbin
-        let p = req.body.pid
-
+        let b = []
+        let p = []
+        b.push(req.body.pbin)
+        p.push(req.body.pid)
         for (var i in p) {
             var db_in = `UPDATE prescriptions SET bin = '${b[i]}' WHERE uid_prescription='${p[i]}'`;
             con.query(db_in, function (err, result) {
@@ -428,15 +418,11 @@ router.delete('/user/view-prescriptions', checkAuthenticated, async (req, res) =
     try {
 
         var del_pre = `DELETE FROM prescriptions WHERE uid_prescription = '${pid}'`;
-        // con.query(del_pre, function (err) {
-        //     if (err) return console.log(err);
-        //     req.flash('success', "Successfully deleted prescription!")
-        //     res.redirect('/LoggedIn/user/view-prescriptions')
-        // })
-        req.flash('success', "Successfully deleted prescription!")
+        con.query(del_pre, function (err) {
+            if (err) return console.log(err);
+            req.flash('success', "Successfully deleted prescription!")
             res.redirect('/LoggedIn/user/view-prescriptions')
-
-
+        })
     } catch {
         req.flash('success', "Error deleting prescription...")
         res.redirect('/LoggedIn/user/view-prescriptions')
