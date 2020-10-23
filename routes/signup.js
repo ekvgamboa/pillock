@@ -82,7 +82,7 @@ router.post('/', checkNotAuthenticated, async (req, res) => {
                 console.log(result);
             })
 
-            let getid = `SELECT uid_user FROM userinfo WHERE email='${em}' `;
+            let getid = `SELECT * FROM userinfo WHERE email='${em}' `;
             con.query(getid, function (error, results) {
                 if (error) {
                     return console.error(error.message);
@@ -98,6 +98,7 @@ router.post('/', checkNotAuthenticated, async (req, res) => {
                         dob: bd
                     });
                 });
+                res.redirect('/login')
                 // console.log(users);
             });
             con.end(function (err) {
@@ -106,9 +107,6 @@ router.post('/', checkNotAuthenticated, async (req, res) => {
                 // else
                 //     console.log("database closed...")
             })
-
-            res.redirect('/login')
-
         }
         catch {
             res.redirect('/signup')
