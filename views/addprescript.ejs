@@ -20,21 +20,20 @@
                 </div>
                 <div class="page-content">
                     <div class="input-group" style="padding-top:25px;overflow:auto;width:45vw;">
-                        <% if(status == 0){ %>
-                        <div class='input-group-edit-message' style="text-align:center;">
-                            <%= message %><a href="/LoggedIn/user/view-prescriptions" class="profile"
-                                style="color:white;"> View prescription(s)</a>
-                        </div>
-                        <% } else{ %>
-                        <%= message %>
+                        <% if(typeof success != undefined && success != ''){ %>
+                        <%= success %> <a href="/LoggedIn/user/view-prescriptions" class="profile" style="color:white;">
+                            View Prescription(s)</a>
+                        <% } else if(typeof error != undefined && error != ''){ %>
+                            <%= error %>
                         <% } %>
-                        <form class="join-form-edit" action="/LoggedIn/add-device?_method=PUT" method="POST">
-                            <div class="input-group" style="margin-bottom:1rem;"><b>Prescription Name:</b> <input type="text" id="addPrescript"
-                                    name="addPrescript" autofocus required></div>
-                            <div class="input-group" style="margin-bottom:1rem;"><b>Dosage:</b> <input type="text" id="pin1" name="pin1" required>
+                        <form class="join-form-edit" action="/LoggedIn/user/add-prescription" method="POST">
+                            <div class="input-group" style="margin-bottom:1rem;"><b>Prescription Name:</b> <input
+                                    type="text" id="addPrescript" name="addPrescript" autofocus required></div>
+                            <div class="input-group" style="margin-bottom:1rem;"><b>Dosage:</b> <input type="text"
+                                    id="dosage" name="dosage" required>
                             </div>
-                            <div class="input-group" style="margin-bottom:1rem;"><b>Schedule Time:</b> <input type="time" id="pin2" name="pin2"
-                                    required></div>
+                            <div class="input-group" style="margin-bottom:1rem;"><b>Schedule Time:</b> <input
+                                    type="time" id="schedule" name="schedule" required></div>
                             <div class="input-group" style="margin-bottom:1rem;">
                                 <button type="submit" class="btn">Save</button>
                             </div>

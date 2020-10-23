@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const mysql = require('mysql')
+const con = require('../app')
 
 router.get('/', checkAuthenticated, async (req, res) => {
     res.render('userindex', { title: "Welcome to Pillock" })
@@ -15,12 +16,6 @@ router.get('/user', checkAuthenticated, async (req, res) => {
     let p = []
     let b = []
     try {
-        const con = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASS,
-            database: process.env.DATABASE_NAME
-        })
 
         var db_in = `SELECT * FROM userinfo 
                     LEFT JOIN prescriptions
@@ -40,6 +35,7 @@ router.get('/user', checkAuthenticated, async (req, res) => {
                     bin: row.bin
                 })
             })
+
             for (var i in result) {
                 if (result[i].pname == null)
                     p = '--empty--'
@@ -59,39 +55,24 @@ router.get('/user', checkAuthenticated, async (req, res) => {
                 email: result[0].email,
                 pbin: b
             })
-
-        })
-        con.end(function (err) {
-            if (err)
-                throw err
         })
     } catch {
         res.redirect('/')
     }
-
-
 })
 
 router.delete('/user', async (req, res) => {
     try {
-        const con = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASS,
-            database: process.env.DATABASE_NAME
-        })
-
         var del_user = `DELETE FROM userinfo WHERE uid_user = '${req.user.id}'`;
         con.query(del_user, function (err) {
             if (err) throw err;
             // console.log("YOU JUST DROPPED THAT DUNDUNDUN!")
+
             req.logout()
             res.redirect('/')
         })
 
-        con.end(function (err) {
-            if (err) throw err;
-        })
+
 
     } catch {
         res.redirect('/LoggedIn/user')
@@ -103,12 +84,6 @@ router.get('/user/edit', checkAuthenticatedEdit, (req, res) => {
     try {
         let u = []
         let p = []
-        const con = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASS,
-            database: process.env.DATABASE_NAME
-        })
 
         var db_in = `SELECT * FROM userinfo 
                     LEFT JOIN prescriptions
@@ -127,6 +102,7 @@ router.get('/user/edit', checkAuthenticatedEdit, (req, res) => {
                     count: row.count
                 })
             })
+
             for (var i in result) {
                 if (result[i].pname == null)
                     p = '--empty--'
@@ -147,10 +123,6 @@ router.get('/user/edit', checkAuthenticatedEdit, (req, res) => {
                 email: result[0].email
             })
         })
-        con.end(function (err) {
-            if (err)
-                throw err
-        })
     } catch {
         res.redirect('/')
     }
@@ -165,12 +137,6 @@ router.put('/user/edit', async (req, res) => {
     try {
         let u = []
         let p = []
-        const con = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASS,
-            database: process.env.DATABASE_NAME
-        })
 
         var db_in = `UPDATE userinfo SET DOB='${b_d}', name='${f_n}', surname='${l_n}' WHERE email='${em}'`;
         con.query(db_in, function (err, result) {
@@ -196,6 +162,7 @@ router.put('/user/edit', async (req, res) => {
                     count: row.count
                 })
             })
+
             for (var i in result) {
                 if (result[i].pname == null)
                     p = '--empty--'
@@ -207,12 +174,6 @@ router.put('/user/edit', async (req, res) => {
 
             req.flash('edituser', 'Successfully saved profile!')
             res.redirect("/LoggedIn/user/edit")
-        })
-
-        con.end(function (err) {
-            if (err)
-                throw err
-            // console.log("database closed...")
         })
     }
     catch {
@@ -227,13 +188,6 @@ router.get('/user/prescript', checkAuthenticated, async (req, res) => {
     let d = []
     let pid = []
     try {
-        const con = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASS,
-            database: process.env.DATABASE_NAME
-        })
-
         var db_in = `SELECT * FROM prescriptions
                     WHERE prescriptions.uid_user='${req.user.id}'`;
 
@@ -258,10 +212,6 @@ router.get('/user/prescript', checkAuthenticated, async (req, res) => {
                 pid: pid
             })
         })
-        con.end(function (err) {
-            if (err)
-                throw err
-        })
     } catch {
         res.redirect('/')
     }
@@ -279,12 +229,6 @@ router.put('/user/prescript', checkAuthenticated, async (req, res) => {
         let dose = []
         let sched = []
         let pid = []
-        const con = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASS,
-            database: process.env.DATABASE_NAME
-        })
 
         var db_in = `UPDATE prescriptions
                       SET pname='${pillname}', dosage='${pilldosage}', time='${schedule}'
@@ -312,12 +256,9 @@ router.put('/user/prescript', checkAuthenticated, async (req, res) => {
                     pid.push(result[i].uid_prescription)
                 }
             }
+
             req.flash('editprescript', 'Successfully Saved Prescription(s)!')
             res.redirect('/LoggedIn/user/prescript')
-        })
-        con.end(function (err) {
-            if (err)
-                throw err
         })
     }
     catch {
@@ -325,7 +266,6 @@ router.put('/user/prescript', checkAuthenticated, async (req, res) => {
         res.redirect('/LoggedIn/user/prescript')
     }
 })
-
 
 router.get('/add-device', checkAuthenticated, (req, res) => {
     res.render('addDevice', {
@@ -339,12 +279,6 @@ router.get('/add-device', checkAuthenticated, (req, res) => {
 router.put('/add-device', checkAuthenticated, async (req, res) => {
 
     try {
-        const con = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASS,
-            database: process.env.DATABASE_NAME
-        })
 
         if (req.body.pin1 == req.body.pin2) {
             var device = req.body.addDevice
@@ -353,6 +287,7 @@ router.put('/add-device', checkAuthenticated, async (req, res) => {
             var q = `UPDATE userinfo SET device_number = '${device}', passcode = '${pin}' WHERE uid_user = '${req.user.id}'`;
             con.query(q, function (err, result) {
                 if (err) throw err;
+
                 req.flash('addSuccess', 'Successfully added device!')
                 res.redirect('/add-device')
             })
@@ -360,12 +295,6 @@ router.put('/add-device', checkAuthenticated, async (req, res) => {
             req.flash('errPin', 'PINs do not match...')
             res.redirect('/add-device')
         }
-        con.end(function (err) {
-            if (err)
-                throw err
-            // else
-            //     console.log("database closed...")
-        });
     } catch {
         req.flash('addError', 'Could not add device...')
         res.redirect('/add-device')
@@ -383,6 +312,11 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
             password: process.env.DATABASE_PASS,
             database: process.env.DATABASE_NAME
         })
+
+        con.connect(function (err) {
+            if (err) throw err;
+        })
+
         var db_in = `SELECT * FROM userinfo
                     LEFT JOIN prescriptions
                     ON userinfo.uid_user = prescriptions.uid_user
@@ -408,12 +342,6 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
                 pid: pid
             }))
         })
-        con.end(function (err) {
-            if (err)
-                throw err
-            // else
-            //     console.log("database closed...")
-        });
     } catch {
         res.redirect('/')
     }
@@ -427,15 +355,7 @@ router.put('/manage-device', checkAuthenticated, async (req, res) => {
         let b = req.body.pbin
         let p = req.body.pid
 
-        const con = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASS,
-            database: process.env.DATABASE_NAME
-        })
-
         for (var i in p) {
-
             var db_in = `UPDATE prescriptions SET bin = '${b[i]}' WHERE uid_prescription='${p[i]}'`;
             con.query(db_in, function (err, result) {
                 if (err) throw err;
@@ -449,16 +369,10 @@ router.put('/manage-device', checkAuthenticated, async (req, res) => {
 
         con.query(sel_in, function (err, result) {
             if (err) throw err;
+
             req.flash('editdev', 'Successfully saved device!')
             res.redirect('/LoggedIn/manage-device')
         })
-
-        con.end(function (err) {
-            if (err)
-                throw err
-            // else
-            //     console.log("database closed...")
-        });
     } catch {
         req.flash('errdev', 'Error saving device...')
         res.redirect('/LoggedIn/manage-device')
@@ -471,12 +385,6 @@ router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
     let dose = []
     let sched = []
     try {
-        const con = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASS,
-            database: process.env.DATABASE_NAME
-        })
 
         var db_in = `SELECT * FROM prescriptions WHERE uid_user = '${req.user.id}'`;
         con.query(db_in, function (err, result) {
@@ -495,6 +403,7 @@ router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
                     sched.push(result[i].time)
                 }
             }
+
             res.render('prescriptions', {
                 title: "Pillock - View Prescription(s)",
                 prescript: pname,
@@ -503,24 +412,48 @@ router.get('/user/view-prescriptions', checkAuthenticated, (req, res) => {
                 schedule: sched
             })
         })
-        con.end(function (err) {
-            if (err)
-                throw err
-            // else
-            //     console.log("database closed...")
-        });
     } catch {
 
     }
 
 })
 
+router.delete('/user/view-prescriptions', checkAuthenticated, async (req, res) => {
+    res.redirect('/LoggedIn/user/view-prescriptions')
+})
+
 router.get('/user/add-prescription', checkAuthenticated, async (req, res) => {
     res.render('addprescript', {
         title: "Pillock - Add Prescription",
-        message: '',
-        status: 1
+        success: req.flash('success'),
+        error: req.flash('error'),
     })
+})
+
+router.post('/user/add-prescription', checkAuthenticated, async (req, res) => {
+    try {
+
+        var add_prescript = `INSERT INTO prescriptions
+                             (pname, dosage, time, uid_user)
+                             VALUES ('${req.body.addPrescript}', '${req.body.dosage}','${req.body.schedule}', '${req.user.id}')`;
+
+        con.query(add_prescript, function (err) {
+            if (err) {
+                throw err;
+            }
+        })
+
+        let getid = `SELECT * FROM prescriptions WHERE uid_user = '${req.user.id}'`;
+        con.query(getid, function (err, result) {
+            if (err) throw err;
+
+            req.flash('success', "Successfully added prescription!")
+            res.redirect('/LoggedIn/user/add-prescription')
+        })
+    } catch {
+        req.flash('error', 'Error adding prescription...')
+        res.redirect('/LoggedIn/user/add-prescription')
+    }
 })
 
 function checkAuthenticated(req, res, next) {
