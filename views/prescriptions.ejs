@@ -26,6 +26,22 @@
                                     &emsp;Dosage: <%= dosage[i] %><br>
                                     &emsp;Schedule: <input style="font:inherit;border:0;" type = "time" value ="<%= schedule[i] %>" style="border:0;"disabled>
                                 </li>
+                                <div style="display:flex;justify-content: center;">
+                                    <form method="POST" action="/LoggedIn/user/view-prescriptions?_method=DELETE">
+                                        <input class="delete-btn" id="delete_user" name="delete_user" type='submit'
+                                            value="delete prescription" onclick="warn()">
+                                    </form>
+                                </div>
+                                <script type="text/javascript">
+                                    function warn() {
+                                        if (confirm("Are you sure you want to drop that dundundun?")) {
+                                            alert("YOU JUST DROPPED THAT DUNDUNDUN!")
+                                            next()
+                                        } else {
+                                            res.redirect('/LoggedIn/user')
+                                        }
+                                    }
+                                </script>
                                 <% if(i < prescript.length-1){%>
                                     <hr width="100%" noshade>
                                 <% }%>

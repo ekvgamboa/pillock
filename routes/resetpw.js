@@ -3,20 +3,10 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 const mysql = require('mysql')
-
+const con = require('../app')
 let users = []
 
 try {
-
-    const con = mysql.createConnection({
-        host: process.env.DATABASE_HOST,
-        user: process.env.DATABASE_USER,
-        password: process.env.DATABASE_PASS,
-        database: process.env.DATABASE_NAME
-    })
-    con.connect(function (err) {
-        if (err) throw err;
-    })
     con.query(`SELECT email FROM userinfo`, function (err, result) {
         if (err) throw err;
 
@@ -25,11 +15,8 @@ try {
             users.push(row)
         })
     })
-    con.end(function (err) {
-        if (err) throw err;
-    })
-} catch {
-
+} catch (err){
+    console.log(err)
 }
 
 router.get('/', async (req, res) => {
@@ -47,7 +34,7 @@ router.put('/', async (req, res) => {
         req.flash('noUser', "Email is not registered...")
         res.redirect('/change-password')
     }
-    
+
     if (req.body.pw1 != req.body.pw2) {
         req.flash('mismatch', "Passwords do not match")
         res.redirect('/change-password')
@@ -56,30 +43,16 @@ router.put('/', async (req, res) => {
     }
     try {
 
-        const con = mysql.createConnection({
-            host: process.env.DATABASE_HOST,
-            user: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASS,
-            database: process.env.DATABASE_NAME
-        })
-
         var db_in = `UPDATE userinfo SET web_pw='${new_pw}' WHERE email='${em}'`;
         con.query(db_in, function (err, result) {
             if (err) throw err;
             // console.log("1 record updated" + result);
         })
-
-        con.end(function (err) {
-            if (err)
-                throw err
-            // else
-            //     console.log("database closed...")
-        })
-
         res.redirect('/')
     }
-    catch {
+    catch (err){
         // res.redirect('/signup')
+        console.log(err)
     }
 })
 

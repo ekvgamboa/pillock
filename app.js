@@ -1,7 +1,6 @@
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
-require('sqreen')
 
 const express = require('express')
 const app = express()
@@ -16,6 +15,18 @@ const expresslayouts = require('express-ejs-layouts')
 const prescripts = ['aspirin', 'hot sauce', 'niners suck']
 
 const mysql = require('mysql')
+try{
+    const con = mysql.createPool({
+        host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER,
+            password: process.env.DATABASE_PASS,
+            database: process.env.DATABASE_NAME
+    })
+    console.log("connected to db...")
+    module.exports = con
+}catch (err){
+    console.log(err)
+}
 
 
 const options = {

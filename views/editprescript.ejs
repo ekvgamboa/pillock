@@ -23,7 +23,8 @@
                     <div class="input-group">
                         <% if(typeof editprescript != undefined && editprescript != '') { %>
                         <div class='input-group-edit-message' style="text-align:center;">
-                            <%- editprescript %><a href="/LoggedIn/user/view-prescriptions" class="profile" style="color:white;"> View Prescription(s)</a>
+                            <%- editprescript %><a href="/LoggedIn/user/view-prescriptions" class="profile"
+                                style="color:white;"> View Prescription(s)</a>
                         </div>
                         <% } else if(typeof errprescript != undefined && errprescript !=''){ %>
                         <div class='input-group-edit-message' style="text-align:center;">
@@ -38,8 +39,9 @@
                                         value="<%= prescript[i]%>" required></div>
                                 <div class="input-group-edit"><b>Dosage:</b><input type=number id="dosage" name="dosage"
                                         value="<%= dosage[i]%>" required></div>
-                                <div class="input-group-edit"><b>Scheduled Time:</b><input style="font:inherit;"type="time" id="schedule"
-                                        name="schedule" value="<%= schedule[i]%>" required></div>
+                                <div class="input-group-edit"><b>Scheduled Time:</b><input style="font:inherit;"
+                                        type="time" id="schedule" name="schedule" value="<%= schedule[i]%>" required>
+                                </div>
                                 <div class="input-group" style="padding-top:10px;">
                                     <button type="submit" class="btn">Save</button>
                                 </div>
