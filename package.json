@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Senior Design web app",
   "main": "app.js",
-  
   "scripts": {
     "start": "node app.js",
     "devStart": "nodemon app.js"
@@ -24,6 +23,7 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.2",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "protractor": "^4.0.8"
   }
 }
