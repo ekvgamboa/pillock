@@ -84,7 +84,7 @@ router.delete('/user', async (req, res) => {
         var del_user = `DELETE FROM userinfo WHERE uid_user = '${req.user.id}'`;
         con.query(del_user, function (err) {
             if (err) throw err;
-            console.log("YOU JUST DROPPED THAT DUNDUNDUN!")
+            // console.log("YOU JUST DROPPED THAT DUNDUNDUN!")
             req.logout()
             res.redirect('/')
         })
@@ -553,7 +553,4 @@ function checkAuthenticatedEdit(req, res, next) {
     //next()
 }
 
-function warn(req, res, next) {
-    next()
-}
 module.exports = router
