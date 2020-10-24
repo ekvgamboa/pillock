@@ -31,9 +31,9 @@
                             <%- errprescript %>
                         </div>
                         <% } %>
-                        <div style="overflow:auto;overflow-x:hidden;height:325px;width:50vw;">
+                        <div style="overflow:auto;overflow-x:hidden;height:335px;width:50vw;">
                             <% for (var i in prescript){ %>
-                            <form class="join-form-edit" action="/LoggedIn/user/prescript?_method=PUT" method="POST">
+                            <form class="join-form-edit" action="/LoggedIn/user/prescript?_method=PUT" method="POST" style="width:45vw;">
                                 <input type='text' id='pid' name='pid' style="display:none;" value="<%= pid[i] %>">
                                 <div class="input-group-edit"><b>Name:</b><input type=text id="pname" name="pname"
                                         value="<%= prescript[i]%>" required></div>
@@ -48,8 +48,8 @@
                             </form>
                             <% } %>
                         </div>
-                        <div class="input-group-cancel">
-                            <a href="/LoggedIn/user/view-prescriptions">Cancel</a>
+                        <div class="input-group-cancel" style="padding-top:10px;display:flex;justify-content: left;align-items:left;">
+                            <a href="/LoggedIn/user/view-prescriptions" style="width:45vw;">Cancel</a>
                             <! onclick="history.go(-1)">
                         </div>
 
