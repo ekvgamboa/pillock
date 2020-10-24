@@ -279,12 +279,25 @@ router.get('/add-device', checkAuthenticated, (req, res) => {
 router.put('/add-device', checkAuthenticated, async (req, res) => {
 
     try {
+        if (req.body.pin1 == req.body.pin2) {
+            var device = req.body.addDevice
+            var pin = req.body.pin1
 
+            var q = `UPDATE userinfo SET device_number = '${device}', passcode = '${pin}' WHERE uid_user = '${req.user.id}'`;
+            con.query(q, function (err, result) {
+                if (err) throw err;
+
+                req.flash('addSuccess', 'Successfully added device!')
+                res.redirect('/add-device')
+            })
+        } else {
+            req.flash('errPin', 'PINs do not match...')
+            res.redirect('/add-device')
+        }
     } catch {
         req.flash('addError', 'Could not add device...')
         res.redirect('/LoggedIn/add-device')
     }
-    res.redirect('/LoggedIn/add-device')
 })
 
 router.get('/manage-device', checkAuthenticated, (req, res) => {

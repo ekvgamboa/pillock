@@ -43,12 +43,6 @@
 						<hr width="100%" noshade>
 						<div>
 							<b><a href="/LoggedIn/user/view-prescriptions" class="profile">View Prescription(s)</a></b>
-							<!-- <ul>
-								<script language="JavaScript">
-									var pills = "<%= prescript %>"
-									document.write(pills)
-								</script>
-							</ul> -->
 						</div>
 						<hr width="100%" noshade>
 
@@ -57,7 +51,7 @@
 								<button type="submit" class="btn" justify="center">Log Out</button>
 							</div>
 						</form>
-						<div style="display:flex;justify-content: center;">
+						<div style="display:flex;justify-content: center;margin-bottom: 0;">
 							<form method="POST" action="/LoggedIn/user?_method=DELETE">
 								<input class="delete-btn" id="delete_user" name="delete_user" type='submit'
 									value="delete profile" onclick="warn()" >
