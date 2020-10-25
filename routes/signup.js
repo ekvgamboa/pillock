@@ -64,7 +64,9 @@ router.post('/', checkNotAuthenticated, async (req, res) => {
             });
             if (users.find(user => user.email === em)) {
                 res.render('signup', { message: "User exists with entered email!" })
-            } else {
+            } else if(req.body.password != req.body.cpassword){
+                res.render('signup',{message: "Passwords do not match!"})
+            }else {
                 var db_in = `INSERT INTO userinfo (name, surname, DOB, email, web_pw) VALUES ('${f_n}', '${l_n}', '${bd}','${em}', '${pw}')`;
                 con.query(db_in, function (err, result) {
                     if (err) throw err;
