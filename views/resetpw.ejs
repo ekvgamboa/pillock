@@ -23,6 +23,27 @@
             <% } else if(typeof passwordm != undefined && passwordm != ''){ %>
                 <%= passwordm %>
             <% } %>
+            <script type="text/javascript">
+                function checkPass() {
+                    var password1 = document.getElementById('pw1');
+                    var password2 = document.getElementById('pw2');
+
+                    var confirmed_message = document.getElementById('test');
+                    if(password1.value.trim() == "" || password2.value.trim() == ""){
+                        confirmed_message.innterHTML = "";
+                    } else if (password1.value == password2.value) {
+                        confirmed_message.innerHTML = "Passwords match!";
+                        document.getElementById('signupbtn').disabled = false;
+                        document.getElementById('signupbtn').style.opacity = "100%";
+                    } else {
+                        confirmed_message.innerHTML = "Passwords do not match...please try again.";
+                        document.getElementById('signupbtn').disabled = true;
+                        document.getElementById('signupbtn').style.opacity = "25%";
+                    }
+                }
+                password1.onchange = checkPass();
+                password2.onchange = checkPass();
+            </script>
             <form class="join-form" action="/Change-Password?_method=PUT" method="POST">
                 <div class="input-group">
                     <label for = "email">Enter Email:</label>
@@ -30,11 +51,12 @@
                 </div>
                 <div class="input-group">
                     <label for = "pw1">New Password:</label>
-                    <input type="password" id = "pw1" name = "pw1" required>
+                    <input type="password" id = "pw1" name = "pw1" minlength="8" onkeyup="checkPass();" required>
                 </div>
                 <div class="input-group">
                     <label for = "pw2">Confirm Password:</label>
-                    <input type="password" id = "pw2" name = "pw2" required>
+                    <input type="password" id = "pw2" name = "pw2" minlength="8" onkeyup="checkPass();" required>
+                    <span id="test"></span>
                 </div>
                 <div class="input-group">
                     <button type = "submit" class="btn">Submit</button>
