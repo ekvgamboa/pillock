@@ -33,12 +33,12 @@
                         confirmed_message.innterHTML = "";
                     } else if (password1.value == password2.value) {
                         confirmed_message.innerHTML = "Passwords match!";
-                        document.getElementById('signupbtn').disabled = false;
-                        document.getElementById('signupbtn').style.opacity = "100%";
+                        document.getElementById('resbtn').disabled = false;
+                        document.getElementById('resbtn').style.opacity = "100%";
                     } else {
                         confirmed_message.innerHTML = "Passwords do not match...please try again.";
-                        document.getElementById('signupbtn').disabled = true;
-                        document.getElementById('signupbtn').style.opacity = "25%";
+                        document.getElementById('resbtn').disabled = true;
+                        document.getElementById('resbtn').style.opacity = "25%";
                     }
                 }
                 password1.onchange = checkPass();
@@ -59,7 +59,7 @@
                     <span id="test"></span>
                 </div>
                 <div class="input-group">
-                    <button type = "submit" class="btn">Submit</button>
+                    <button type = "submit" class="btn" id="resbtn">Submit</button>
                 </div>
                 <div class = "input-group">
                     <a href = "/" class = "forgot">Cancel</a>
