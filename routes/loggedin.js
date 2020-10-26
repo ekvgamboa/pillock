@@ -305,6 +305,9 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
         let pname = []
         let pbin = []
         let pid = []
+        let pcount = []
+        let available_bin = []
+        var device_id
 
         var db_in = `SELECT * FROM userinfo
                     LEFT JOIN prescriptions
@@ -319,17 +322,43 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
                 pname.push(row.pname)
                 pbin.push(row.bin)
                 pid.push(row.uid_prescription)
+                pcount.push(row.count)
+                device_id = row.device_number
             })
-
-            res.render('manageDevice', ({
-                title: 'Pillock - Manage Device',
-                editdev: req.flash('editdev'),
-                errdev: req.flash('errdev'),
-                deviceID: result[0].device_number,
-                pbin: pbin,
-                pname: pname,
-                pid: pid
-            }))
+            var get_bins = `SELECT bin from userinfo
+                            LEFT JOIN prescriptions
+                            ON userinfo.uid_user = prescriptions.uid_user
+                            WHERE device_number = '${device_id}'`;
+            con.query(get_bins, function (err, result2) {
+                if (err) throw err;
+                Object.keys(result2).forEach(function (key) {
+                    var row = result2[key]
+                    available_bin.push(row.bin)
+                })
+                let inuse = []
+                for (var x in pbin) {
+                    console.log(pbin[x])
+                    for (var y in available_bin) {
+                        console.log(available_bin[y])
+                        if (available_bin[y] != pbin[x] && available_bin[y] != inuse[x]) {
+                            inuse.push(available_bin[y])
+                        }
+                    }
+                }
+                res.render('manageDevice', ({
+                    title: 'Pillock - Manage Device',
+                    editdev: req.flash('editdev'),
+                    errdev: req.flash('errdev'),
+                    deviceID: device_id,
+                    pbin: pbin,
+                    pname: pname,
+                    pcount: pcount,
+                    pid: pid,
+                    available: available_bin
+                }))
+                console.log(available_bin)
+                console.log(inuse)
+            })
         })
     } catch {
         res.redirect('/')
@@ -342,10 +371,12 @@ router.put('/manage-device', checkAuthenticated, async (req, res) => {
     try {
         let b = []
         let p = []
+        let c = []
         b.push(req.body.pbin)
         p.push(req.body.pid)
+        c.push(req.body.pcount)
         for (var i in p) {
-            var db_in = `UPDATE prescriptions SET bin = '${b[i]}' WHERE uid_prescription='${p[i]}'`;
+            var db_in = `UPDATE prescriptions SET bin = '${b[i]}', count = '${c[i]}' WHERE uid_prescription='${p[i]}'`;
             con.query(db_in, function (err, result) {
                 if (err) throw err;
             })
