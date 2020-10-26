@@ -460,3 +460,18 @@ body {
 	background-color: #596da0;
 }
 
+.bin-select{
+	position: relative;
+	font-family: inherit;
+	font-size: 22;
+	background-color: transparent;
+	border: 0;
+	height: 30px;
+	width: 50px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+
+
+

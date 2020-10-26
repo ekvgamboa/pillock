@@ -32,14 +32,36 @@
 					<form class = "join-form-edit" action = "/LoggedIn/manage-device?_method=PUT" method = "POST" style="width:45vw;">
                         <div><b>Device ID:</b> <%= deviceID %></div>
                         <div><b>Prescription(s):</b></div>
-                        <ul class = "prescript-list">
+                        <ul class = "prescript-list" style="overflow:auto;overflow-x:hidden;height:165px;width:45vw;">
 							<% var i = 0 %>
 							<% for( i in pname) { %>
 								<input value = "<%=pid[i]%>" id="pid" name="pid" style="display:none;">
-                                <li style="padding-bottom:10px;"><%= pname[i] %><br>
-									&emsp;Bin: <input type = "number" value = "<%= pbin[i]%>" id="pbin" 
-									name= "pbin" style="width:65px;border:0;">
-                                </li>
+                                <li style="padding-bottom:10px;"><b><%= pname[i] %></b><br>
+									&emsp;Bin: <select class="bin-select" name="pbin" id="pbin">
+										<% if(pbin[i] == 1){ %>
+											<option value="1" selected>1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+										<% } else if([pbin[i]] == 2){ %>
+											<option value="1">1</option>
+											<option value="2" selected>2</option>
+											<option value="3">3</option>
+										<% } else if(pbin[i] == 3){ %>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3" selected>3</option>
+										<% } else { %>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+										<% } %>
+									</select>
+									<br>
+									&emsp;Count: <input type="number" id="pcount"  name="pcount" value="<%=pcount[i]%>" style="width:10vw;">
+									<!-- <input type = "number" value = "<%= pbin[i]%>" id="pbin" 
+									name= "pbin" style="width:65px;border:0;"> -->
+								</li>
+								<hr width="100%" noshade>
                             <% } %>
                         </ul>
 						<div class="input-group" style="margin-bottom:1rem;">
