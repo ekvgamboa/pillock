@@ -467,9 +467,10 @@ body {
 	background-color: transparent;
 	border: 0;
 	height: 30px;
-	width: 50px;
+	width: 100px;
 	margin-top: 10px;
 	margin-bottom: 10px;
+	text-align: center;
 }
 
 

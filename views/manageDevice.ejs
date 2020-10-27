@@ -1,25 +1,26 @@
 <! DOCTYPE html>
 
-<html lang = "en">
-<head>
-	<meta charset = "UTF-8">
-	<meta name = "viewport" content = "width=device-width,intial-scale=1.0">
-	<link href = "/stylesheets/main.css" rel = "stylesheet">
-	<title><%= title %></title>
-</head>
+	<html lang="en">
 
-<body class = "full-height-grow">
-	
-    <%- include('../views/partials/loginHeader.ejs') %>	
-    <div class = "container full-height-grow">
-		<section class = "main-section">
-			<div class = "left">
-				<h1 class = 'index-title'>Manage Device</h1>
-				&lt; Insert some witty slogan here  &gt;
-			</div>
-			<div class = "page-content">
-				<div class = "input-group">
-					<% if(typeof editdev != undefined && editdev != '') { %>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,intial-scale=1.0">
+		<link href="/stylesheets/main.css" rel="stylesheet">
+		<title><%= title %></title>
+	</head>
+
+	<body class="full-height-grow">
+
+		<%- include('../views/partials/loginHeader.ejs') %>
+		<div class="container full-height-grow">
+			<section class="main-section">
+				<div class="left">
+					<h1 class='index-title'>Manage Device</h1>
+					&lt; Insert some witty slogan here &gt;
+				</div>
+				<div class="page-content">
+					<div class="input-group">
+						<% if(typeof editdev != undefined && editdev != '') { %>
 						<div class='input-group-edit-message' style="text-align:center;">
 							<%- editdev %><a href="/LoggedIn/user" class="profile" style="color:white;"> Go Back to
 								Profile</a>
@@ -29,55 +30,86 @@
 							<%- errdev %>
 						</div>
 						<% } %>
-					<form class = "join-form-edit" action = "/LoggedIn/manage-device?_method=PUT" method = "POST" style="width:45vw;">
-                        <div><b>Device ID:</b> <%= deviceID %></div>
-                        <div><b>Prescription(s):</b></div>
-                        <ul class = "prescript-list" style="overflow:auto;overflow-x:hidden;height:165px;width:45vw;">
-							<% var i = 0 %>
-							<% for( i in pname) { %>
-								<input value = "<%=pid[i]%>" id="pid" name="pid" style="display:none;">
-                                <li style="padding-bottom:10px;"><b><%= pname[i] %></b><br>
+						<form class="join-form-edit" action="/LoggedIn/manage-device?_method=PUT" method="POST"
+							style="width:45vw;">
+							<div><b>Device ID:</b> <%= deviceID %></div>
+							<div><b>Prescription(s):</b></div>
+							<ul class="prescript-list" style="overflow:auto;overflow-x:hidden;height:165px;width:45vw;">
+								<% var i = 0 %>
+								<% for( i in pname) { %>
+								<input value="<%=pid[i]%>" id="pid" name="pid" style="display:none;">
+								<li style="padding-bottom:10px;"><b><%= pname[i] %></b><br>
 									&emsp;Bin: <select class="bin-select" name="pbin" id="pbin">
 										<% if(pbin[i] == 1){ %>
+											<option value=null>-None-</option>
 											<option value="1" selected>1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
+											<% if(available.find(test => test == "2")){ %>
+												<option value="2" disabled>2 (Currently In Use)</option>
+											<% } else { %>
+												<option value="2" >2</option>
+											<% } %>
+											<% if(available.find(test => test == "3")){ %>
+												<option value="3" disabled>3 (Currently In Use)</option>
+											<% } else { %>
+												<option value="3" >3</option>
+											<% } %>
 										<% } else if([pbin[i]] == 2){ %>
-											<option value="1">1</option>
+											<option value=null>-None-</option>
+											<% if(available.find(test => test == "1")){ %>
+												<option value="1" disabled>1 (Currently In Use)</option>
+											<% } else { %>
+												<option value="1" >1</option>
+											<% } %>
 											<option value="2" selected>2</option>
-											<option value="3">3</option>
+											<% if(available.find(test => test == "3")){ %>
+												<option value="3" disabled>3 (Currently In Use)</option>
+											<% } else { %>
+												<option value="3" >3</option>
+											<% } %>
 										<% } else if(pbin[i] == 3){ %>
-											<option value="1">1</option>
-											<option value="2">2</option>
+											<option value=null>-None-</option>
+											<% if(available.find(test => test == "1")){ %>
+												<option value="1" disabled>1 (Currently In Use)</option>
+											<% } else { %>
+												<option value="1" >1</option>
+											<% } %>
+											<% if(available.find(test => test == "2")){ %>
+												<option value="2" disabled>2 (Currently In Use)</option>
+											<% } else { %>
+												<option value="2" >2</option>
+											<% } %>
 											<option value="3" selected>3</option>
 										<% } else { %>
+											<option value=null selected>-None-</option>
 											<option value="1">1</option>
 											<option value="2">2</option>
 											<option value="3">3</option>
 										<% } %>
 									</select>
 									<br>
-									&emsp;Count: <input type="number" id="pcount"  name="pcount" value="<%=pcount[i]%>" style="width:10vw;">
+									&emsp;Count: <input type="number" id="pcount" name="pcount" value="<%=pcount[i]%>"
+										style="width:10vw;">
 									<!-- <input type = "number" value = "<%= pbin[i]%>" id="pbin" 
 									name= "pbin" style="width:65px;border:0;"> -->
 								</li>
 								<hr width="100%" noshade>
-                            <% } %>
-                        </ul>
-						<div class="input-group" style="margin-bottom:1rem;">
-							<button type="submit" class="btn">Save</button>
-						</div>
-						<div class = "input-group-cancel">
-							<a href = "/LoggedIn/user" class = "input-group-cancel">Cancel</a>
-							<! onclick="history.go(-1)">
-						</div>
-					</form>
-            </div>
-            
-		</section>
-	</div>
-    
-    <%- include('../views/partials/footer.ejs') %>
+								<% } %>
+							</ul>
+							<div class="input-group" style="margin-bottom:1rem;">
+								<button type="submit" class="btn">Save</button>
+							</div>
+							<div class="input-group-cancel">
+								<a href="/LoggedIn/user" class="input-group-cancel">Cancel</a>
+								<! onclick="history.go(-1)">
+							</div>
+						</form>
+					</div>
 
-</body>
-</html>
+			</section>
+		</div>
+
+		<%- include('../views/partials/footer.ejs') %>
+
+	</body>
+
+	</html>

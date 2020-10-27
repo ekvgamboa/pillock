@@ -3,6 +3,7 @@ const router = express.Router()
 const mysql = require('mysql')
 const con = require('../app')
 
+let total_bin = ['1','2','3']
 router.get('/', checkAuthenticated, async (req, res) => {
     res.render('userindex', { title: "Welcome to Pillock" })
 })
@@ -306,6 +307,7 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
         let pbin = []
         let pid = []
         let pcount = []
+        let inuse = []
         let available_bin = []
         var device_id
 
@@ -333,18 +335,17 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
                 if (err) throw err;
                 Object.keys(result2).forEach(function (key) {
                     var row = result2[key]
-                    available_bin.push(row.bin)
+                    inuse.push(row.bin)
                 })
-                let inuse = []
-                for (var x in pbin) {
-                    console.log(pbin[x])
-                    for (var y in available_bin) {
-                        console.log(available_bin[y])
-                        if (available_bin[y] != pbin[x] && available_bin[y] != inuse[x]) {
-                            inuse.push(available_bin[y])
-                        }
+
+                for(var x in inuse){
+                    if(total_bin.find(inuse_bin => inuse_bin == inuse[x])){
+                        available_bin.push(inuse[x])
+                    } else{
+                        available_bin.push('0')
                     }
                 }
+                
                 res.render('manageDevice', ({
                     title: 'Pillock - Manage Device',
                     editdev: req.flash('editdev'),
@@ -356,8 +357,6 @@ router.get('/manage-device', checkAuthenticated, (req, res) => {
                     pid: pid,
                     available: available_bin
                 }))
-                console.log(available_bin)
-                console.log(inuse)
             })
         })
     } catch {
