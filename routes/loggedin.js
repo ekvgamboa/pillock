@@ -289,11 +289,11 @@ router.put('/add-device', checkAuthenticated, async (req, res) => {
                 if (err) throw err;
 
                 req.flash('addSuccess', 'Successfully added device!')
-                res.redirect('/add-device')
+                res.redirect('/LoggedIn/add-device')
             })
         } else {
             req.flash('errPin', 'PINs do not match...')
-            res.redirect('/add-device')
+            res.redirect('/LoggedIn/add-device')
         }
     } catch {
         req.flash('addError', 'Could not add device...')
